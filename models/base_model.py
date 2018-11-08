@@ -4,13 +4,14 @@
 import uuid
 from datetime import datetime
 
+
 class BaseModel():
     """BaseModel Class"""
     def __init__(self, *args, **kwargs):
         """Initialization of instance
         Args:
              created_at: current datetime when an instance is created
-             updated_at: current datetime when an instance is created or updated
+             updated_at: current datetime when an instance is created/updated
         """
         fmt = '%Y-%m-%dT%H:%M:%S.%f'
         self.id = str(uuid.uuid4())
