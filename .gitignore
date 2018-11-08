@@ -1,0 +1,4 @@
+# ignoring temporaray files
+*~
+#*
+__pycache__/

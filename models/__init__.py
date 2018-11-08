@@ -1,5 +1,6 @@
 #!/usr/bin/python3
+"""Folder becomes a python module"""
+import engine.file_storage
 
-
-from base_model import BaseModel
-from engine/file_storage import FileStorage
+storage = FileStorage()
+reload(storage)
