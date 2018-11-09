@@ -3,6 +3,7 @@
 
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel():
@@ -10,8 +11,8 @@ class BaseModel():
     def __init__(self, *args, **kwargs):
         """Initialization of instance
         Args:
-             created_at: current datetime when an instance is created
-             updated_at: current datetime when an instance is created/updated
+            *args: arguments
+            **kwargs: keyword arguments
         """
         fmt = '%Y-%m-%dT%H:%M:%S.%f'
         self.id = str(uuid.uuid4())
@@ -43,7 +44,7 @@ class BaseModel():
     def save(self):
         """updates the public instance attribute upadated_at
         with the current datetime"""
-        self.updated_at = datetime.utcnow().isoformat()
+        storage.save()
 
     def to_dict(self):
         """ returns a dictionary containing all keys and values of __dict__
