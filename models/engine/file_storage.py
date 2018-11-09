@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Module with FileStorage class"""
+import json
 import os
 
 
@@ -17,8 +18,9 @@ class FileStorage():
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        if self.__file_path is not None:
-            print("file exists")
+        with open(self.__file_path) as file:
+            self.__objects = json.load(file)
+
 
     def all(self):
         """returns the dictionary __objects"""
