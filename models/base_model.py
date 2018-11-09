@@ -10,7 +10,7 @@ class BaseModel():
     """BaseModel Class"""
     def __init__(self, *args, **kwargs):
         """Initialization of instance
-        Args:
+            Args:
             *args: arguments
             **kwargs: keyword arguments
         """
@@ -20,7 +20,6 @@ class BaseModel():
         self.updated_at = datetime.now().isoformat()
         if len(kwargs) != 0:
             """ LOOP FOR SETTING VALUES """
-
             for k, v in kwargs.items():
                 if k == "id":
                     self.id = v
@@ -31,10 +30,11 @@ class BaseModel():
                 if k == "name":
                     self.name = v
                 if k == "updated_at":
-                    """ NEED TO MAKE THESE DATETIME"""
                     self.updated_at = datetime.strptime(v, fmt)
                 if k == "created_at":
                     self.created_at = datetime.strptime(v, fmt)
+        else:
+            storage.new(self)
 
     def __str__(self):
         """prints a summary of the instance attributes"""
@@ -44,6 +44,7 @@ class BaseModel():
     def save(self):
         """updates the public instance attribute upadated_at
         with the current datetime"""
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
@@ -52,4 +53,4 @@ class BaseModel():
         dic = self.__dict__
         if '__class__' not in dic:
             dic['__class__'] = str(self.__class__)
-        return dic
+            return dic
