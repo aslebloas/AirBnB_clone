@@ -2,7 +2,8 @@
 """Module with FileStorage class"""
 import json
 import os
-# from models.base_model import BaseModel
+from datetime import datetime
+
 
 class FileStorage():
     """ serializes instances to a JSON file and deserializes
@@ -14,14 +15,13 @@ class FileStorage():
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        if os.path.exists('file.json'):
+        if os.path.exists(self.__file_path):
             with open(self.__file_path) as file:
                 self.__objects = json.load(file)
- #               dic = json.load(file)
- #               for k, v in dic:
- #                   self.__objects[k] = BaseModel(v)
-
-
+                dic = self.__objects
+                for k, v in dic.items():
+                    from models.base_model import BaseModel
+                    self.__objects[k] = BaseModel(**v)
 
     def all(self):
         """returns the dictionary __objects"""
@@ -30,14 +30,19 @@ class FileStorage():
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id
         Args:
-        obj: object
+            obj: object
         """
         key = str(obj.__class__.__name__) + "." + str(obj.id)
-        self.__objects[key] = obj.__dict__
-
+        self.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
-        print("saved!")
+        fmt = '%Y-%m-%dT%H:%M:%S.%f'
+        dictionary = {}
         with open(self.__file_path, "w") as file:
-            json.dump(self.__objects, file)
+            for k, v in self.__objects.items():
+                dictionary[k] = v.__dict__
+                for key, value in dictionary[k].items():
+                    if key == 'created_at' or key == 'updated_at':
+                        dictionary[k][key] = value.strftime(fmt)
+            json.dump(dictionary, file)
