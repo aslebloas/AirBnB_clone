@@ -47,7 +47,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Deletes a Spacific Object"""
-        pass
+        Models = ["BaseModel"]
+        args = line.split(' ')
+        if len(line) == 0:
+            print("** class name missing **")
+        elif args[1] not in Models:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            file_path = os.path.abspath("file.json")
+            if os.path.exists('file.json'):
+                with open(file_path, "r+") as file:
+                    dic = json.loads(file):
+                    inst = args[0] + '.' + args[1]
+                    if inst in dic:
+                        dic.pop(inst)
+                        json.dump(dic, file)
+                    else:
+                        print("** no instance found **")
 
     def do_create(self, line):
         """Creates a new Model"""
