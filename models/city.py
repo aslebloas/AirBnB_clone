@@ -13,4 +13,4 @@ class City(BaseModel):
                 self.name = kwargs["name"]
             if "state_id" in kwargs:
                 self.state_id = kwargs["state_id"]
-        super(City, self).__init__(kwargs)
+        super(City, self).__init__(**kwargs)

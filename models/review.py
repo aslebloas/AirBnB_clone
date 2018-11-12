@@ -16,4 +16,4 @@ class Review(BaseModel):
                 self.user_id = kwargs["user_id"]
             if "text" in kwargs:
                 self.text = kwargs["text"]
-        super(Review, self).__init__(kwargs)
+        super(Review, self).__init__(**kwargs)

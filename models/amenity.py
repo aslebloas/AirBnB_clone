@@ -7,4 +7,4 @@ class Amenity(BaseModel):
     def __init__(self, *args, **kwargs):
         """Initialization of instance"""
         self.name = ''
-        super(Amenity, self).__init__(kwargs)
+        super(Amenity, self).__init__(**kwargs)
