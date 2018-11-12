@@ -49,5 +49,12 @@ class TestBaseModel(unittest.TestCase):
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
 
+    def test_kwargs(self):
+        """test create BaseModel from dictionary"""
+        self.model_json = self.model2.to_dict()
+        self.model3 = BaseModel(**self.model_json)
+        self.assertIs(type(self.model3.created_at), datetime)
+        self.assertIsNot(self.model3, self.model2)
+
 if __name__ == '__main__':
     unittest.main()
