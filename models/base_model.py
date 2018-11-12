@@ -23,7 +23,7 @@ class BaseModel():
                 if k == "my_number":
                     self.my_number = v
                 if k == "__class__":
-                    self.__class__ = type(self)
+                    pass
                 if k == "name":
                     self.name = v
                 if k == "updated_at":
@@ -44,17 +44,17 @@ class BaseModel():
         """updates the public instance attribute upadated_at
         with the current datetime"""
         self.updated_at = datetime.now()
-        print(type(self.updated_at))
         storage.save()
 
     def to_dict(self):
         """ returns a dictionary containing all keys and values of __dict__
         of the instance """
         fmt = '%Y-%m-%dT%H:%M:%S.%f'
-        dic = self.__dict__
-        if '__class__' not in dic:
-            dic['__class__'] = str(self.__class__.__name__)
-        for k, v in dic.items():
+        dic = {}
+        dic['__class__'] = str(self.__class__.__name__)
+        for k, v in self.__dict__.items():
             if k == 'created_at' or k == 'updated_at':
-                dic[k] = v.strftime(fmt)
+                dic[k] = v.isoformat()
+            else:
+                dic[k] = v
         return dic
