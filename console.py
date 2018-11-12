@@ -53,7 +53,9 @@ class HBNBCommand(cmd.Cmd):
                     dic = storage.all()
                     ins_id = args[0] + '.' + args[1]
                     if ins_id in dic:
-                        print(dic[ins_id])
+                        st = ('[' + args[0] + '] (' + args[1] + ') ' +
+                              str(dic[ins_id]))
+                        print(st)
                     else:
                         print("** no instance found **")
             else:
@@ -84,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         args = line.split(' ')
         if len(line) == 0:
             print("** class name missing **")
-        elif args[1] not in Models:
+        elif args[0] not in Models:
             print("** class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
