@@ -35,9 +35,14 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                 else:
                     """ actual update"""
-                    dic[key][args[2]] = args[3]
+                    dictionary = dic[key].to_dict()
+                    string = args[3][1:-1]
+                    if args[2] == "name":
+                        dictionary[args[2]] = str(string)
+                    else:
+                        dictionary[args[2]] = int(string)
                     """ change once mode models exist"""
-                    new = BaseModel(dic[key])
+                    new = BaseModel(**dictionary)
                     new.save()
             else:
                 print("** no instance found **")
@@ -74,7 +79,8 @@ class HBNBCommand(cmd.Cmd):
         models = ["BaseModel"]
         """Add More Once more Models added"""
         if len(line) == 0 or line in models:
-            dic = storage.all()
+            dic = {}
+            dic = storage.all().copy()
             lst = []
             for k in dic.keys():
                 lst.append(str(dic[k]))
