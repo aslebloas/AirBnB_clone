@@ -33,7 +33,6 @@ class BaseModel():
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.name = "youhou"
         storage.new(self)
 
     def __str__(self):
