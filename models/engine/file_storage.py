@@ -41,8 +41,5 @@ class FileStorage():
         dictionary = {}
         with open(self.__file_path, "w") as file:
             for k, v in self.__objects.items():
-                dictionary[k] = v.__dict__
-                for key, value in dictionary[k].items():
-                    if key == 'created_at' or key == 'updated_at':
-                        dictionary[k][key] = value.strftime(fmt)
+                dictionary[k] = v.to_dict()
             json.dump(dictionary, file)

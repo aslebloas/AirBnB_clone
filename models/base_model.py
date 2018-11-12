@@ -33,7 +33,7 @@ class BaseModel():
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            storage.new(self)
+        storage.new(self)
 
     def __str__(self):
         """prints a summary of the instance attributes"""
@@ -44,8 +44,8 @@ class BaseModel():
         """updates the public instance attribute upadated_at
         with the current datetime"""
         self.updated_at = datetime.now()
-        storage.new(self)
-#        storage.save()
+        print(type(self.updated_at))
+        storage.save()
 
     def to_dict(self):
         """ returns a dictionary containing all keys and values of __dict__
