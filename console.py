@@ -22,21 +22,20 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             dic = storage.all()
-            flag = 1
-            for k, v in dic:
-                key = k.split('.')
-                if key[1] == args[2]:
-                    flag = 0
-                    if len(args) == 2:
-                        print("** attribute name missing **")
-                    elif len(args) == 3:
-                        print("** value missing **")
-                    else:
-                        """ actual update"""
-                        v[args[2]] = args[3]
-                        v.save()
-                if flag == 1:
-                    print("** no instance found **")
+            key = args[0] + '.' + args[1]
+            if key in dic:
+                if len(args) == 2:
+                    print("** attribute name missing **")
+                elif len(args) == 3:
+                    print("** value missing **")
+                else:
+                    """ actual update"""
+                    dic[key][args[2]] = args[3]
+                    """ change once mode models exist"""
+                    new = BaseModel(dic[key])
+                    new.save()
+            else:
+                print("** no instance found **")
 
     def do_show(self, line):
         """Shows a given Model"""
