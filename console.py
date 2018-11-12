@@ -5,23 +5,25 @@ import json
 import os
 import sys
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """comand line prompt for air bnb"""
+    models = ["BaseModel", "User"]
 
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
         Args:
             line: line argument
         """
-        Models = ["BaseModel"]
+
         """ Need add More once More models exist"""
         args = line.split(' ')
         if len(line) == 0:
             print("** class name missing **")
-        elif args[0] not in Models:
+        elif args[0] not in HBNBCommand.models:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -52,13 +54,12 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line: command line
         """
-        models = ['BaseModel']
         """ Need Work once more models made"""
         if len(line) == 0:
             print("** class name missing **")
         else:
             args = line.split(' ')
-            if args[0] in models:
+            if args[0] in HBNBCommand.models:
                 if len(args) < 2:
                     print("** instance id missing **")
                 else:
@@ -76,9 +77,8 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line: command line
         """
-        models = ["BaseModel"]
         """Add More Once more Models added"""
-        if len(line) == 0 or line in models:
+        if len(line) == 0 or line in HBNBCommand.models:
             dic = {}
             dic = storage.all().copy()
             lst = []
@@ -93,12 +93,11 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line: Command line
         """
-        Models = ["BaseModel"]
         """Add Mode Once More Models added"""
         args = line.split(' ')
         if len(line) == 0:
             print("** class name missing **")
-        elif args[0] not in Models:
+        elif args[0] not in HBNBCommand.models:
             print("** class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
@@ -118,12 +117,14 @@ class HBNBCommand(cmd.Cmd):
         """
         if line == "BaseModel":
             new = BaseModel()
-            new.save()
-            print(new.id)
+        elif line == "User":
+            new = User()
         elif len(line) == 0:
             print("** class name missing **")
         else:
             print("** class doesn't exist **")
+        new.save()
+        print(new.id)
 
     def do_EOF(self, line):
         """EOF command to exit the program"""

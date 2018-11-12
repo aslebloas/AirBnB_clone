@@ -20,8 +20,12 @@ class FileStorage():
                 self.__objects = json.load(file)
                 dic = self.__objects
                 for k, v in dic.items():
-                    from models.base_model import BaseModel
-                    self.__objects[k] = BaseModel(**v)
+                    if v['__class__'] == "BaseModel":
+                        from models.base_model import BaseModel
+                        self.__objects[k] = BaseModel(**v)
+                    else:
+                        from models.user import User
+                        self.__objects[k] = User(**v)
 
     def all(self):
         """returns the dictionary __objects"""
