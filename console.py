@@ -3,57 +3,107 @@
 
 import cmd, sys, os, json
 from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """comand line prompt for air bnb"""
 
+    def do_update(self, line):
+        """Updates an instance by add ing or updating an attribute"""
+        Models = ["BaseModel"]
+        """ Need add More once More models exist"""
+        args = line.split(' ')
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in Models:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            dic = storage.all()
+            key = args[0] + '.' + args[1]
+            if key in dic:
+                if len(args) == 2:
+                    print("** attribute name missing **")
+                elif len(args) == 3:
+                    print("** value missing **")
+                else:
+                    """ actual update"""
+                    dic[key][args[2]] = args[3]
+                    """ change once mode models exist"""
+                    new = BaseModel(dic[key])
+                    new.save()
+            else:
+                print("** no instance found **")
+
     def do_show(self, line):
         """Shows a given Model"""
         models = ['BaseModel']
-        if not line:
+        """ Need Work once more models made"""
+        if len(line) == 0:
             print("** class name missing **")
         else:
             args = line.split(' ')
             if args[0] in models:
                 if len(args) < 2:
                     print("** instance id missing **")
-                elif os.path.exists('file.json'):
-                    file_path = os.path.abspath("file.json")
-                    with open(file_path, "r") as file:
-                        dic = json.load(file)
-                        ins_id = args[0] + '.' + args[1]
-                        if ins_id in dic:
-                            print(dic[ins_id])
-                        else:
-                            print("** no instance found **")
                 else:
-                    print("** no instance found no file**")
+                    dic = storage.all()
+                    ins_id = args[0] + '.' + args[1]
+                    if ins_id in dic:
+                        st = ('[' + args[0] + '] (' + args[1] + ') ' +
+                              str(dic[ins_id]))
+                        print(st)
+                    else:
+                        print("** no instance found **")
             else:
                 print("** class doesn't exist **")
 
     def do_all(self, line):
         """Prints All Insteses of Spacific Model Type"""
         models = ["BaseModel"]
+        """Add More Once more Models added"""
         if line in models:
-            if os.path.exists('file.json'):
-                file_path = os.path.abspath("file.json")
-                with open(file_path, "r") as file:
-                    """ INCORRECT FORMAT and Prints All!!!!!!!!!!!!!!!!!!!!"""
-                    print("incorrect format")
-                    print(file.read())
+            dic = storage.all()
+            lst = []
+            for k in dic.keys():
+                key = k.split('.')
+                if line == key[0]:
+                    """ Needs work once mode models added"""
+                    st = ('[' + line + '] (' + str(dic[k]['id']) + ') '
+                          + str(dic[k]))
+                    lst += [st]
+            print(lst)
         else:
             print("** class doesn't exist **")
 
     def do_destroy(self, line):
         """Deletes a Spacific Object"""
-        pass
+        Models = ["BaseModel"]
+        """Add Mode Once More Models added"""
+        args = line.split(' ')
+        if len(line) == 0:
+            print("** class name missing **")
+        elif args[0] not in Models:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            dic = storage.all()
+            inst = args[0] + '.' + args[1]
+            if inst in dic:
+                dic.pop(inst)
+                storage.save()
+            else:
+                print("** no instance found **")
 
     def do_create(self, line):
         """Creates a new Model"""
         if line == "BaseModel":
             new = BaseModel()
             print(new.id)
+            new.save()
         elif len(line) == 0:
             print("** class name missing **")
         else:
