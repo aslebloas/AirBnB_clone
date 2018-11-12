@@ -15,7 +15,7 @@ class BaseModel():
             **kwargs: keyword arguments
         """
         fmt = '%Y-%m-%dT%H:%M:%S.%f'
-        if len(kwargs) != 0:
+        if type(kwargs) is dict and len(kwargs) != 0:
             """ LOOP FOR SETTING VALUES """
             for k, v in kwargs.items():
                 if k == "id":

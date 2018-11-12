@@ -12,11 +12,14 @@ class HBNBCommand(cmd.Cmd):
     """comand line prompt for air bnb"""
 
     def do_update(self, line):
-        """Updates an instance by add ing or updating an attribute"""
+        """Updates an instance by add ing or updating an attribute
+        Args:
+            line: line argument
+        """
         Models = ["BaseModel"]
         """ Need add More once More models exist"""
         args = line.split(' ')
-        if len(args) == 0:
+        if len(line) == 0:
             print("** class name missing **")
         elif args[0] not in Models:
             print("** class doesn't exist **")
@@ -40,7 +43,10 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_show(self, line):
-        """Shows a given Model"""
+        """Shows a given Model
+        Args:
+            line: command line
+        """
         models = ['BaseModel']
         """ Need Work once more models made"""
         if len(line) == 0:
@@ -54,34 +60,33 @@ class HBNBCommand(cmd.Cmd):
                     dic = storage.all()
                     ins_id = args[0] + '.' + args[1]
                     if ins_id in dic:
-                        st = ('[' + args[0] + '] (' + args[1] + ') ' +
-                              str(dic[ins_id]))
-                        print(st)
+                        print(dic[ins_id])
                     else:
                         print("** no instance found **")
             else:
                 print("** class doesn't exist **")
 
     def do_all(self, line):
-        """Prints All Insteses of Spacific Model Type"""
+        """Prints All Insteses of Spacific Model Type
+        Args:
+            line: command line
+        """
         models = ["BaseModel"]
         """Add More Once more Models added"""
-        if line in models:
+        if len(line) == 0 or line in models:
             dic = storage.all()
             lst = []
             for k in dic.keys():
-                key = k.split('.')
-                if line == key[0]:
-                    """ Needs work once mode models added"""
-                    st = ('[' + line + '] (' + str(dic[k]['id']) + ') '
-                          + str(dic[k]))
-                    lst += [st]
+                lst.append(str(dic[k]))
             print(lst)
         else:
             print("** class doesn't exist **")
 
     def do_destroy(self, line):
-        """Deletes a Spacific Object"""
+        """Deletes a Spacific Object
+        Args:
+            line: Command line
+        """
         Models = ["BaseModel"]
         """Add Mode Once More Models added"""
         args = line.split(' ')
@@ -101,11 +106,14 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_create(self, line):
-        """Creates a new Model"""
+        """Creates a new Model
+        Args:
+            line: command line
+        """
         if line == "BaseModel":
             new = BaseModel()
-            print(new.id)
             new.save()
+            print(new.id)
         elif len(line) == 0:
             print("** class name missing **")
         else:
