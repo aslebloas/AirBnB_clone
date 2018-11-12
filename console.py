@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-
-
-import cmd, sys, os, json
+"""Module for the console"""
+import cmd
+import json
+import os
+import sys
 from models.base_model import BaseModel
 from models import storage
 
@@ -114,7 +116,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """simply clicking enter goes to next line with prompt no other print"""
+        """simply clicking enter goes to next line
+        with prompt no other print"""
         if self.lastcmd:
             self.lastcmd = ""
             return self.onecmd(self.lastcmd)
