@@ -5,13 +5,25 @@ import json
 import os
 import sys
 from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """comand line prompt for air bnb"""
-    models = ["BaseModel", "User"]
+    models = ["BaseModel", "User", "State", "City", "Amenity", "Place",
+              "Review"]
+    str_atts = ["name", "state_id", "city_id", "user_id", "description",
+                "place_id", "user_id", "text", "email", "password",
+                "first_name", "last_name"]
+    int_atts = ["number_rooms", "number_bathrooms", "max_guest",
+                "price_by_night"]
+    float_atts = ["latitude", "longitude"]
 
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
@@ -39,12 +51,29 @@ class HBNBCommand(cmd.Cmd):
                     """ actual update"""
                     dictionary = dic[key].to_dict()
                     string = args[3][1:-1]
-                    if args[2] == "name":
+                    if args[2] in HBNBCommand.str_atts:
                         dictionary[args[2]] = str(string)
-                    else:
+                    elif args[2] in HBNBCommand.int_atts:
                         dictionary[args[2]] = int(string)
+                    elif args[2] in HBNBCommand.float_atts:
+                        dictionary[args[2]] = float(string)
+                    elif args[2] == "amenity_ids":
+                        dictionary[args[2]] = list(string)
                     """ change once mode models exist"""
-                    new = BaseModel(**dictionary)
+                    if args[0] == "BaseModel":
+                        new = BaseModel(**dictionary)
+                    elif args[0] == "User":
+                        new = User(**dictionary)
+                    elif args[0] == "State":
+                        new = State(**dictionary)
+                    elif args[0] == "City":
+                        new = City(**dictionary)
+                    elif args[0] == "Amenity":
+                        new = Amenity(**dictionary)
+                    elif args[0] == "Place":
+                        new = Place(**dictionary)
+                    elif args[0] == "Review":
+                        new = Review(**dictionary)
                     new.save()
             else:
                 print("** no instance found **")
@@ -78,12 +107,21 @@ class HBNBCommand(cmd.Cmd):
             line: command line
         """
         """Add More Once more Models added"""
-        if len(line) == 0 or line in HBNBCommand.models:
+        if len(line) == 0:
             dic = {}
             dic = storage.all().copy()
             lst = []
             for k in dic.keys():
                 lst.append(str(dic[k]))
+            print(lst)
+        elif line in HBNBCommand.models:
+            dic = {}
+            dic = storage.all().copy()
+            lst = []
+            for k in dic.keys():
+                args = k.split('.')
+                if line == args[0]:
+                    lst.append(str(dic[k]))
             print(lst)
         else:
             print("** class doesn't exist **")
@@ -119,6 +157,16 @@ class HBNBCommand(cmd.Cmd):
             new = BaseModel()
         elif line == "User":
             new = User()
+        elif line == "State":
+            new = State()
+        elif line == "City":
+            new = City()
+        elif line == "Amenity":
+            new = Amenity()
+        elif line == "Place":
+            new = Place()
+        elif line == "Review":
+            new = Review()
         elif len(line) == 0:
             print("** class name missing **")
         else:
