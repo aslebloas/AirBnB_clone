@@ -23,7 +23,22 @@ class FileStorage():
                     if v['__class__'] == "BaseModel":
                         from models.base_model import BaseModel
                         self.__objects[k] = BaseModel(**v)
-                    else:
+                    elif v['__class__'] == "State":
+                        from models.state import State
+                        self.__objects[k] = State(**v)
+                    elif v['__class__'] == "City":
+                        from models.city import City
+                        self.__objects[k] = City(**v)
+                    elif v['__class__'] == "Amenity":
+                        from models.amenity import Amenity
+                        self.__objects[k] = Amenity(**v)
+                    elif v['__class__'] == "Place":
+                        from models.place import Place
+                        self.__objects[k] = Place(**v)
+                    elif v['__class__'] == "Review":
+                        from models.review import Review
+                        self.__objects[k] = Review(**v)
+                    elif v['__class__'] == "User":
                         from models.user import User
                         self.__objects[k] = User(**v)
 
