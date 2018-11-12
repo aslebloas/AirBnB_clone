@@ -38,4 +38,4 @@ class Place(BaseModel):
                 self.longitude = kwargs["longitude"]
             if "amenity_ids" in kwargs:
                 self.amenity_ids = kwargs["amenity_ids"]
-        super(City, self).__init__(kwargs)
+        super(Place, self).__init__(kwargs)
