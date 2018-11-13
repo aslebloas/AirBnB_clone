@@ -26,6 +26,48 @@ class HBNBCommand(cmd.Cmd):
                 "price_by_night"]
     float_atts = ["latitude", "longitude"]
 
+    def default(self, line):
+        if len(line) != 0:
+            arg = line.split('.')
+            typ = arg[0]
+            if len(arg) != 1:
+                args = arg[1].split('(')
+                if len(args) != 1:
+                    args[1] = args[1][:-1]
+                    if args[0] == 'all':
+                        self.do_all(typ)
+                    elif args[0] == 'show':
+                        self.do_show(typ + ' ' + args[1])
+                    elif args[0] == 'destroy':
+                        self.do_destroy(typ + ' ' + args[1])
+                    elif args[0] == 'update':
+                        argss = args[1].split(',')
+                        if len(argss) > 1:
+                            argss[1] = argss[1][1:]
+                            if len(argss) > 2:
+                                argss[2] = argss[2][1:]
+                                self.do_update(typ + ' ' + argss[0] +
+                                               ' ' + argss[1] + ' ' + argss[2])
+                            else:
+                                self.do_update(typ + ' ' + argss[0] + ' ' +
+                                               argss[1])
+                        else:
+                            self.do_update(typ + ' ' + argss[0])
+                    elif args[0] == 'count':
+                        dic = storage.all()
+                        count = 0
+                        for k in dic.keys():
+                            key = k.split('.')
+                            if key[0] == typ:
+                                count += 1
+                        print(count)
+                    else:
+                        print('*** Unknown syntax: ' + line)
+                else:
+                    print('*** Unknown syntax: ' + line)
+            else:
+                print('*** Unknown syntax: ' + line)
+
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
         """
