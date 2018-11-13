@@ -85,4 +85,20 @@ Quit command to exit the program
 ~/AirBnB$
 ```
 
+## Json file
+
+You can use a json file to load objects from the start.
+In this case it must comply with some rules.
+The JSON file is a dictionary of dictionaries. The key are `<class name>.id`
+Values are dictionaries with at least the following keys:
+BaseModel:
+__class__
+created_at
+id
+Note: if an id is not present, a new one will be automatically created.
+
+```
+{"BaseModel.ee49c413-023a-4b49-bd28-f2936c95460d": {"my_number": 89, "__class__": "BaseModel", "updated_at": "2017-09-28T21:07:25.047381", "created_at": "2017-09-28T21:07:25.047372", "name": "Holberton", "id": "ee49c413-023a-4b49-bd28-f2936c95460d"}}
+```
+
 ### Examples

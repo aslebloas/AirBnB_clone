@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
+import json
 import os
 import unittest
+
 from models.base_model import BaseModel
 from datetime import datetime
 from shutil import copyfile
@@ -45,6 +47,7 @@ class TestBaseModelInit(unittest.TestCase):
         """test create BaseModel from dictionary"""
         self.model_dic = self.model2.to_dict()
         self.model3 = BaseModel(**self.model_dic)
+        self.model4 = BaseModel({})
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -52,6 +55,7 @@ class TestBaseModelInit(unittest.TestCase):
         self.assertEqual(self.model3.name, self.model2.name)
         self.assertEqual(self.model3.my_number, self.model2.my_number)
         self.assertNotIn('updated_at', self.model_dic)
+        self.assertIn('id', self.model4.__dict__)
         #TODO: test if dic is not compliant? ie: no id...
 
     def test_str(self):
@@ -80,9 +84,7 @@ class TestBaseModelMethods(unittest.TestCase):
             if os.path.exists(TestBaseModelMethods.test_path) is True:
                 os.remove(TestBaseModelMethods.test_path)
             # copy content of file.json to test_file.json
-            copyfile(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
-            # remove file.json
-            os.remove(TestBaseModelMethods.path)
+            os.rename(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
         else:
             TestBaseModelMethods.flag = 1
 
@@ -94,9 +96,7 @@ class TestBaseModelMethods(unittest.TestCase):
             # remove file.json
             os.remove(TestBaseModelMethods.path)
             # copy content of test_file.json to file.json
-            copyfile(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
-            # remove the copy
-            os.remove(TestBaseModelMethods.test_path)
+            os.rename(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
         if TestBaseModelMethods.flag == 1:
             os.remove(TestBaseModelMethods.path)
 
@@ -117,6 +117,8 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIn('updated_at', self.model1.__dict__)
         self.assertIs(type(self.model1.updated_at), datetime)
         self.assertIs(type(self.model1.created_at), datetime)
+        self.assertEqual(self.model1.created_at < self.model1.updated_at, True)
+        self.assertEqual(self.model1.created_at < self.model2.created_at, True)
 
     def test_to_dict(self):
         """test to_dict BaseModel instance method"""
@@ -131,6 +133,19 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
+
+    def test_json(self):
+        """test formatting in the json file"""
+        self.model1.save()
+        with open(TestBaseModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestBaseModelMethods.path), True)
+            self.json_dict = json.load(file)
+            for k, v in self.json_dict.items():
+                for key, value in v.items():
+                    if key == "created_at":
+                        self.assertIs(type(value), str)
+                    elif key == "updated_at":
+                        self.assertIs(type(value), str)
 
 if __name__ == '__main__':
     unittest.main()

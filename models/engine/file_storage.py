@@ -8,6 +8,9 @@ from datetime import datetime
 class FileStorage():
     """ serializes instances to a JSON file and deserializes
     JSON file to instances """
+    classes = ['BaseModel', 'User', 'State', 'City',
+               'Amenity', 'Place', 'Review']
+
     def __init__(self):
         """initializes instance"""
         self.__file_path = os.path.abspath("file.json")
@@ -41,6 +44,8 @@ class FileStorage():
                     elif v['__class__'] == "User":
                         from models.user import User
                         self.__objects[k] = User(**v)
+                    else:
+                        break
 
     def all(self):
         """returns the dictionary __objects"""
@@ -59,5 +64,6 @@ class FileStorage():
         dictionary = {}
         with open(self.__file_path, "w") as file:
             for k, v in self.__objects.items():
-                dictionary[k] = v.to_dict()
+                if str(k).split(".")[0] in FileStorage.classes:
+                    dictionary[k] = v.to_dict()
             json.dump(dictionary, file)
