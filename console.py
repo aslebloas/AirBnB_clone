@@ -104,6 +104,8 @@ class HBNBCommand(cmd.Cmd):
                         dictionary[args[2]] = float(string)
                     elif args[2] == "amenity_ids":
                         dictionary[args[2]] = list(string)
+                    else:
+                        dictionary[args[2]] = str(string)
                     """ change once mode models exist"""
                     if args[0] == "BaseModel":
                         new = BaseModel(**dictionary)
