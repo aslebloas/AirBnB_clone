@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
-
+import os
 import unittest
 from models.base_model import BaseModel
 from datetime import datetime
-
+from shutil import copyfile
 
 class TestBaseModelInit(unittest.TestCase):
     """Test for BaseModel Instance Initialization"""
@@ -66,6 +66,39 @@ class TestBaseModelInit(unittest.TestCase):
 
 class TestBaseModelMethods(unittest.TestCase):
     """Test for BaseModel methods"""
+    path = os.path.abspath("file.json")
+    test_path = os.path.abspath("test_file.json")
+    flag = 0
+
+    @classmethod
+    def setUpClass(cls):
+        """Setup class instances"""
+        # if file.json exists
+        if os.path.exists(TestBaseModelMethods.path) is True:
+            # if copy of file.json exists delete it
+            if os.path.exists(TestBaseModelMethods.test_path) is True:
+                os.remove(TestBaseModelMethods.test_path)
+            # copy content of file.json to test_file.json
+            copyfile(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
+            # remove file.json
+            os.remove(TestBaseModelMethods.path)
+        else:
+            TestBaseModelMethods.flag = 1
+
+    @classmethod
+    def tearDownClass(cls):
+        """Teardown class instances"""
+        # if copy of file.json exists and is not empty
+        if (os.path.exists(TestBaseModelMethods.test_path)) is True:
+            # remove file.json
+            os.remove(TestBaseModelMethods.path)
+            # copy content of test_file.json to file.json
+            copyfile(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
+            # remove the copy
+            os.remove(TestBaseModelMethods.test_path)
+        if TestBaseModelMethods.flag == 1:
+            os.remove(TestBaseModelMethods.path)
+
     def setUp(self):
         """setup method for the tests in the class"""
         self.model1 = BaseModel()
@@ -97,9 +130,6 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-
-    def tearDown(self):
-        pass
 
 if __name__ == '__main__':
     unittest.main()
