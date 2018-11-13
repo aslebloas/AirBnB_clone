@@ -6,6 +6,7 @@ from models.base_model import BaseModel
 from datetime import datetime
 from shutil import copyfile
 
+
 class TestBaseModelInit(unittest.TestCase):
     """Test for BaseModel Instance Initialization"""
     def setUp(self):
