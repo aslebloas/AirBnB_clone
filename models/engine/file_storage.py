@@ -56,7 +56,6 @@ class FileStorage():
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
-        fmt = '%Y-%m-%dT%H:%M:%S.%f'
         dictionary = {}
         with open(self.__file_path, "w") as file:
             for k, v in self.__objects.items():
