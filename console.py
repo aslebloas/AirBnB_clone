@@ -81,6 +81,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def help_update(self):
+        print("Updates an instance by add ing or updating an attribute\n")
+
     def do_show(self, line):
         """Shows a given Model
         """
@@ -105,6 +108,9 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
             else:
                 print("** class doesn't exist **")
+
+    def help_show(self):
+        print("Shows a given Model\n")
 
     def do_all(self, line):
         """Prints All Insteses of Spacific Model Type
@@ -133,6 +139,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def help_all(self):
+        print("Prints All Insteses of Spacific Model Type\n")
+
     def do_destroy(self, line):
         """Deletes a Spacific Object
         """
@@ -156,6 +165,9 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             else:
                 print("** no instance found **")
+
+    def help_destroy(self):
+        print("Deletes a Spacific Object\n")
 
     def do_create(self, line):
         """Creates a new Model
@@ -185,10 +197,16 @@ class HBNBCommand(cmd.Cmd):
         new.save()
         print(new.id)
 
+    def help_create(self):
+        print("Creates a new Model\n")
+
     def do_EOF(self, line):
         """EOF command to exit the program
         """
         return SystemExit
+
+    def help_EOF(self):
+        print("EOF command to exit the program\n")
 
     def emptyline(self):
         """simply clicking enter goes to next line
@@ -202,6 +220,9 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program
         """
         raise SystemExit
+
+    def help_quit(self):
+        print("Quit command to exit the program\n")
 
 if __name__ == '__main__':
     prompt = HBNBCommand()
