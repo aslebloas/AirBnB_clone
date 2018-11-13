@@ -15,7 +15,8 @@ from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
-    """comand line prompt for air bnb"""
+    """comand line prompt for air bnb
+    """
     models = ["BaseModel", "User", "State", "City", "Amenity", "Place",
               "Review"]
     str_atts = ["name", "state_id", "city_id", "user_id", "description",
@@ -27,6 +28,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
+        """
+        """
         Args:
             line: line argument
         """
@@ -80,6 +83,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Shows a given Model
+        """
+        """
         Args:
             line: command line
         """
@@ -103,6 +108,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints All Insteses of Spacific Model Type
+        """
+        """
         Args:
             line: command line
         """
@@ -128,6 +135,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Deletes a Spacific Object
+        """
+        """
         Args:
             line: Command line
         """
@@ -150,6 +159,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """Creates a new Model
+        """
+        """
         Args:
             line: command line
         """
@@ -175,18 +186,21 @@ class HBNBCommand(cmd.Cmd):
         print(new.id)
 
     def do_EOF(self, line):
-        """EOF command to exit the program"""
+        """EOF command to exit the program
+        """
         return True
 
     def emptyline(self):
         """simply clicking enter goes to next line
-        with prompt no other print"""
+        with prompt no other print
+        """
         if self.lastcmd:
             self.lastcmd = ""
             return self.onecmd(self.lastcmd)
 
     def do_quit(self, args):
-        """Quit command to exit the program"""
+        """Quit command to exit the program
+        """
         raise SystemExit
 
 if __name__ == '__main__':
