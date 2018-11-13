@@ -176,6 +176,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line: command line
         """
+        flag = 0
         if line == "BaseModel":
             new = BaseModel()
         elif line == "User":
@@ -192,10 +193,16 @@ class HBNBCommand(cmd.Cmd):
             new = Review()
         elif len(line) == 0:
             print("** class name missing **")
+            flag = 1
         else:
             print("** class doesn't exist **")
-        new.save()
-        print(new.id)
+            flag = 1
+        if flag == 0:
+            new.save()
+            print(new.id)
+
+    def help_create(self):
+        print("Creates a new Model\n")
 
     def help_create(self):
         print("Creates a new Model\n")
