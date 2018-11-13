@@ -15,7 +15,8 @@ from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
-    """comand line prompt for air bnb"""
+    """comand line prompt for air bnb
+    """
     models = ["BaseModel", "User", "State", "City", "Amenity", "Place",
               "Review"]
     str_atts = ["name", "state_id", "city_id", "user_id", "description",
@@ -25,8 +26,52 @@ class HBNBCommand(cmd.Cmd):
                 "price_by_night"]
     float_atts = ["latitude", "longitude"]
 
+    def default(self, line):
+        if len(line) != 0:
+            arg = line.split('.')
+            typ = arg[0]
+            if len(arg) != 1:
+                args = arg[1].split('(')
+                if len(args) != 1:
+                    args[1] = args[1][:-1]
+                    if args[0] == 'all':
+                        self.do_all(typ)
+                    elif args[0] == 'show':
+                        self.do_show(typ + ' ' + args[1])
+                    elif args[0] == 'destroy':
+                        self.do_destroy(typ + ' ' + args[1])
+                    elif args[0] == 'update':
+                        argss = args[1].split(',')
+                        if len(argss) > 1:
+                            argss[1] = argss[1][1:]
+                            if len(argss) > 2:
+                                argss[2] = argss[2][1:]
+                                self.do_update(typ + ' ' + argss[0] +
+                                               ' ' + argss[1] + ' ' + argss[2])
+                            else:
+                                self.do_update(typ + ' ' + argss[0] + ' ' +
+                                               argss[1])
+                        else:
+                            self.do_update(typ + ' ' + argss[0])
+                    elif args[0] == 'count':
+                        dic = storage.all()
+                        count = 0
+                        for k in dic.keys():
+                            key = k.split('.')
+                            if key[0] == typ:
+                                count += 1
+                        print(count)
+                    else:
+                        print('*** Unknown syntax: ' + line)
+                else:
+                    print('*** Unknown syntax: ' + line)
+            else:
+                print('*** Unknown syntax: ' + line)
+
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
+        """
+        """
         Args:
             line: line argument
         """
@@ -78,8 +123,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def help_update(self):
+        print("Updates an instance by add ing or updating an attribute\n")
+
     def do_show(self, line):
         """Shows a given Model
+        """
+        """
         Args:
             line: command line
         """
@@ -101,8 +151,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
+    def help_show(self):
+        print("Shows a given Model\n")
+
     def do_all(self, line):
         """Prints All Insteses of Spacific Model Type
+        """
+        """
         Args:
             line: command line
         """
@@ -126,8 +181,13 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def help_all(self):
+        print("Prints All Insteses of Spacific Model Type\n")
+
     def do_destroy(self, line):
         """Deletes a Spacific Object
+        """
+        """
         Args:
             line: Command line
         """
@@ -148,11 +208,17 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def help_destroy(self):
+        print("Deletes a Spacific Object\n")
+
     def do_create(self, line):
         """Creates a new Model
+        """
+        """
         Args:
             line: command line
         """
+        flag = 0
         if line == "BaseModel":
             new = BaseModel()
         elif line == "User":
@@ -169,27 +235,46 @@ class HBNBCommand(cmd.Cmd):
             new = Review()
         elif len(line) == 0:
             print("** class name missing **")
+            flag = 1
         else:
             print("** class doesn't exist **")
-        new.save()
-        print(new.id)
+            flag = 1
+        if flag == 0:
+            new.save()
+            print(new.id)
+
+    def help_create(self):
+        print("Creates a new Model\n")
+
+    def help_create(self):
+        print("Creates a new Model\n")
 
     def do_EOF(self, line):
-        """EOF command to exit the program"""
+        """EOF command to exit the program
+        """
         return True
+
+    def help_EOF(self):
+        print("EOF command to exit the program\n")
 
     def emptyline(self):
         """simply clicking enter goes to next line
-        with prompt no other print"""
-        if self.lastcmd:
-            self.lastcmd = ""
-            return self.onecmd(self.lastcmd)
+        with prompt no other print
+        """
+        pass
+
+    def postloop(self):
+        print()
 
     def do_quit(self, args):
-        """Quit command to exit the program"""
-        raise SystemExit
+        """Quit command to exit the program
+        """
+        return True
+
+    def help_quit(self):
+        print("Quit command to exit the program\n")
 
 if __name__ == '__main__':
     prompt = HBNBCommand()
-    prompt.prompt = '(HBNB) '
+    prompt.prompt = '(hbnb) '
     prompt.cmdloop('')

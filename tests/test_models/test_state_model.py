@@ -1,20 +1,19 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
-import os
+
 import unittest
-from models.base_model import BaseModel
+from models.state import State
 from datetime import datetime
-from shutil import copyfile
 
 
-class TestBaseModelInit(unittest.TestCase):
+class TestStateModelInit(unittest.TestCase):
     """Test for BaseModel Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = State()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
 
@@ -29,6 +28,8 @@ class TestBaseModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
+        self.model5 = State()
+        self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
         self.assertIs(type(self.model2.name), str)
@@ -44,7 +45,7 @@ class TestBaseModelInit(unittest.TestCase):
     def test_kwargs(self):
         """test create BaseModel from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = State(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -57,7 +58,7 @@ class TestBaseModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = State(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -65,7 +66,7 @@ class TestBaseModelInit(unittest.TestCase):
         pass
 
 
-class TestBaseModelMethods(unittest.TestCase):
+class TestStateModelMethods(unittest.TestCase):
     """Test for BaseModel methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
@@ -75,37 +76,35 @@ class TestBaseModelMethods(unittest.TestCase):
     def setUpClass(cls):
         """Setup class instances"""
         # if file.json exists
-        if os.path.exists(TestBaseModelMethods.path) is True:
+        if os.path.exists(TestStateModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestBaseModelMethods.test_path) is True:
-                os.remove(TestBaseModelMethods.test_path)
+            if os.path.exists(TestStateModelMethods.test_path) is True:
+                os.remove(TestStateModelMethods.test_path)
             # copy content of file.json to test_file.json
-            copyfile(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
-            # remove file.json
-            os.remove(TestBaseModelMethods.path)
+            os.rename(TestStateModelMethods.path,
+                      TestStateModelMethods.test_path)
         else:
-            TestBaseModelMethods.flag = 1
+            TestStateModelMethods.flag = 1
 
     @classmethod
     def tearDownClass(cls):
         """Teardown class instances"""
         # if copy of file.json exists and is not empty
-        if (os.path.exists(TestBaseModelMethods.test_path)) is True:
+        if (os.path.exists(TestStateModelMethods.test_path)) is True:
             # remove file.json
-            os.remove(TestBaseModelMethods.path)
+            os.remove(TestStateModelMethods.path)
             # copy content of test_file.json to file.json
-            copyfile(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
-            # remove the copy
-            os.remove(TestBaseModelMethods.test_path)
-        if TestBaseModelMethods.flag == 1:
-            os.remove(TestBaseModelMethods.path)
+            os.rename(TestStateModelMethods.test_path,
+                      TestStateModelMethods.path)
+        if TestStateModelMethods.flag == 1:
+            os.remove(TestStateModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = State()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
 
@@ -127,7 +126,7 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "BaseModel")
+        self.assertEqual(self.model1_json['__class__'], "State")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)

@@ -1,22 +1,55 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
-import os
+
 import unittest
-from models.base_model import BaseModel
+from models.review import Review
 from datetime import datetime
-from shutil import copyfile
 
 
-class TestBaseModelInit(unittest.TestCase):
-    """Test for BaseModel Instance Initialization"""
+class TestReviewModelInit(unittest.TestCase):
+    """Test for Review Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = Review()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model1.place_id = "traphouse"
+        self.model1.user_id = "killer mike"
+        self.model1.text = "great place to trap"
+        self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model2.place_id = "mantion"
+        self.model2.user_id = "Bill Gates"
+        self.model2.text = "luxury"
+        self.model5 = Review()
+
+    def test_att_place_id(self):
+        """tests attribuet place_id"""
+        self.assertIs(type(self.model1.text), str)
+        self.assertIs(type(self.model2.text), str)
+        self.assertIs(type(self.model5.text), str)
+        self.assertEqual(self.model1.text, "great place to trap")
+        self.assertEqual(self.model2.text, "luxury")
+        self.assertEqual(self.model5.text, '')
+
+    def test_att_user_id(self):
+        """tests attribuet user_id"""
+        self.assertIs(type(self.model1.user_id), str)
+        self.assertIs(type(self.model2.user_id), str)
+        self.assertIs(type(self.model5.user_id), str)
+        self.assertEqual(self.model1.user_id, "killer mike")
+        self.assertEqual(self.model2.user_id, "Bill Gates")
+        self.assertEqual(self.model5.user_id, '')
+
+    def test_att_place_id(self):
+        """tests attribuet place_id"""
+        self.assertIs(type(self.model1.place_id), str)
+        self.assertIs(type(self.model2.place_id), str)
+        self.assertIs(type(self.model5.place_id), str)
+        self.assertEqual(self.model1.place_id, "traphouse")
+        self.assertEqual(self.model2.place_id, "mantion")
+        self.assertEqual(self.model5.place_id, '')
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -42,9 +75,9 @@ class TestBaseModelInit(unittest.TestCase):
         self.assertEqual(self.model2.my_number, 98)
 
     def test_kwargs(self):
-        """test create BaseModel from dictionary"""
+        """test create Review from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = Review(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -57,7 +90,7 @@ class TestBaseModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = Review(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -65,8 +98,8 @@ class TestBaseModelInit(unittest.TestCase):
         pass
 
 
-class TestBaseModelMethods(unittest.TestCase):
-    """Test for BaseModel methods"""
+class TestReviewModelMethods(unittest.TestCase):
+    """Test for review methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
     flag = 0
@@ -75,42 +108,40 @@ class TestBaseModelMethods(unittest.TestCase):
     def setUpClass(cls):
         """Setup class instances"""
         # if file.json exists
-        if os.path.exists(TestBaseModelMethods.path) is True:
+        if os.path.exists(TestReviewModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestBaseModelMethods.test_path) is True:
-                os.remove(TestBaseModelMethods.test_path)
+            if os.path.exists(TestReviewModelMethods.test_path) is True:
+                os.remove(TestReviewModelMethods.test_path)
             # copy content of file.json to test_file.json
-            copyfile(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
-            # remove file.json
-            os.remove(TestBaseModelMethods.path)
+            os.rename(TestReviewModelMethods.path,
+                      TestReviewModelMethods.test_path)
         else:
-            TestBaseModelMethods.flag = 1
+            TestReviewModelMethods.flag = 1
 
     @classmethod
     def tearDownClass(cls):
         """Teardown class instances"""
         # if copy of file.json exists and is not empty
-        if (os.path.exists(TestBaseModelMethods.test_path)) is True:
+        if (os.path.exists(TestReviewModelMethods.test_path)) is True:
             # remove file.json
-            os.remove(TestBaseModelMethods.path)
+            os.remove(TestReviewModelMethods.path)
             # copy content of test_file.json to file.json
-            copyfile(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
-            # remove the copy
-            os.remove(TestBaseModelMethods.test_path)
-        if TestBaseModelMethods.flag == 1:
-            os.remove(TestBaseModelMethods.path)
+            os.rename(TestReviewModelMethods.test_path,
+                      TestReviewModelMethods.path)
+        if TestReveiwModelMethods.flag == 1:
+            os.remove(TestReveiwModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = Review()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
 
     def test_save(self):
-        """test save BaseModel instance method"""
+        """test save Review instance method"""
         self.model2.save()
         self.assertNotIn('updated_at', self.model1.__dict__)
         self.model1.save()
@@ -119,7 +150,7 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1.created_at), datetime)
 
     def test_to_dict(self):
-        """test to_dict BaseModel instance method"""
+        """test to_dict REveiw instance method"""
         self.model1.save()
         self.model1_json = self.model1.to_dict()
         self.assertIs(type(self.model1_json['my_number']), int)
@@ -127,7 +158,7 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "BaseModel")
+        self.assertEqual(self.model1_json['__class__'], "Review")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)

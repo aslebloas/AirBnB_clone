@@ -29,7 +29,7 @@ class BaseModel():
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            storage.new(self)
+        storage.new(self)
 
     def __str__(self):
         """prints a summary of the instance attributes"""
