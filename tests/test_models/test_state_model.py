@@ -2,18 +2,18 @@
 """Unitest for BaseModel class"""
 
 import unittest
-from models.base_model import BaseModel
+from models.state import State
 from datetime import datetime
 
 
-class TestBaseModelInit(unittest.TestCase):
+class TestStateModelInit(unittest.TestCase):
     """Test for BaseModel Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = State()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
 
@@ -28,6 +28,8 @@ class TestBaseModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
+        self.model5 = State()
+        self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
         self.assertIs(type(self.model2.name), str)
@@ -43,7 +45,7 @@ class TestBaseModelInit(unittest.TestCase):
     def test_kwargs(self):
         """test create BaseModel from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = State(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -56,7 +58,7 @@ class TestBaseModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
+        self.model3 = State(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -64,14 +66,14 @@ class TestBaseModelInit(unittest.TestCase):
         pass
 
 
-class TestBaseModelMethods(unittest.TestCase):
+class TestStateModelMethods(unittest.TestCase):
     """Test for BaseModel methods"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = BaseModel()
+        self.model1 = State()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = BaseModel()
+        self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
 
@@ -93,7 +95,7 @@ class TestBaseModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "BaseModel")
+        self.assertEqual(self.model1_json['__class__'], "State")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
