@@ -188,7 +188,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, line):
         """EOF command to exit the program
         """
-        return True
+        return SystemExit
 
     def emptyline(self):
         """simply clicking enter goes to next line
