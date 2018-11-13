@@ -68,6 +68,37 @@ class TestStateModelInit(unittest.TestCase):
 
 class TestStateModelMethods(unittest.TestCase):
     """Test for BaseModel methods"""
+    path = os.path.abspath("file.json")
+    test_path = os.path.abspath("test_file.json")
+    flag = 0
+
+    @classmethod
+    def setUpClass(cls):
+        """Setup class instances"""
+        # if file.json exists
+        if os.path.exists(TestStateModelMethods.path) is True:
+            # if copy of file.json exists delete it
+            if os.path.exists(TestStateModelMethods.test_path) is True:
+                os.remove(TestStateModelMethods.test_path)
+            # copy content of file.json to test_file.json
+            os.rename(TestStateModelMethods.path,
+                      TestStateModelMethods.test_path)
+        else:
+            TestStateModelMethods.flag = 1
+
+    @classmethod
+    def tearDownClass(cls):
+        """Teardown class instances"""
+        # if copy of file.json exists and is not empty
+        if (os.path.exists(TestStateModelMethods.test_path)) is True:
+            # remove file.json
+            os.remove(TestStateModelMethods.path)
+            # copy content of test_file.json to file.json
+            os.rename(TestStateModelMethods.test_path,
+                      TestStateModelMethods.path)
+        if TestStateModelMethods.flag == 1:
+            os.remove(TestStateModelMethods.path)
+
     def setUp(self):
         """setup method for the tests in the class"""
         self.model1 = State()
@@ -99,9 +130,6 @@ class TestStateModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-
-    def tearDown(self):
-        pass
 
 if __name__ == '__main__':
     unittest.main()

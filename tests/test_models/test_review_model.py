@@ -100,6 +100,37 @@ class TestReviewModelInit(unittest.TestCase):
 
 class TestReviewModelMethods(unittest.TestCase):
     """Test for review methods"""
+    path = os.path.abspath("file.json")
+    test_path = os.path.abspath("test_file.json")
+    flag = 0
+
+    @classmethod
+    def setUpClass(cls):
+        """Setup class instances"""
+        # if file.json exists
+        if os.path.exists(TestReviewModelMethods.path) is True:
+            # if copy of file.json exists delete it
+            if os.path.exists(TestReviewModelMethods.test_path) is True:
+                os.remove(TestReviewModelMethods.test_path)
+            # copy content of file.json to test_file.json
+            os.rename(TestReviewModelMethods.path,
+                      TestReviewModelMethods.test_path)
+        else:
+            TestReviewModelMethods.flag = 1
+
+    @classmethod
+    def tearDownClass(cls):
+        """Teardown class instances"""
+        # if copy of file.json exists and is not empty
+        if (os.path.exists(TestReviewModelMethods.test_path)) is True:
+            # remove file.json
+            os.remove(TestReviewModelMethods.path)
+            # copy content of test_file.json to file.json
+            os.rename(TestReviewModelMethods.test_path,
+                      TestReviewModelMethods.path)
+        if TestReveiwModelMethods.flag == 1:
+            os.remove(TestReveiwModelMethods.path)
+
     def setUp(self):
         """setup method for the tests in the class"""
         self.model1 = Review()
@@ -131,9 +162,6 @@ class TestReviewModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-
-    def tearDown(self):
-        pass
 
 if __name__ == '__main__':
     unittest.main()
