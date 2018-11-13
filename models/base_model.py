@@ -11,8 +11,8 @@ class BaseModel():
     def __init__(self, *args, **kwargs):
         """Initialization of instance
             Args:
-            *args: arguments
-            **kwargs: keyword arguments
+                *args: arguments
+                **kwargs: keyword arguments
         """
         fmt = '%Y-%m-%dT%H:%M:%S.%f'
         if type(kwargs) is dict and len(kwargs) != 0:
