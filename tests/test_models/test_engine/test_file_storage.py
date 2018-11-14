@@ -33,8 +33,8 @@ class TestFileStorageInit(unittest.TestCase):
         if os.path.exists(TestFileStorageInit.test_path) is True:
             os.rename(TestFileStorageInit.test_path,
                       TestFileStorageInit.path)
-        if (TestFileStorageInit.flag == 1 and
-            os.path.exists(TestFileStorageInit.path) is True):
+        if ((os.path.exists(TestFileStorageInit.path) and
+                TestFileStorageInit.flag == 1)):
             os.remove(TestFileStorageInit.path)
 
     def test_init(self):
@@ -47,6 +47,7 @@ class TestFileStorageInit(unittest.TestCase):
         self.assertEqual(
             TestFileStorageInit.storage._FileStorage__file_path,
             TestFileStorageInit.path)
+
 
 class TestFileStorageReload(unittest.TestCase):
     """Test for FileStorage instance initialization"""
@@ -74,8 +75,8 @@ class TestFileStorageReload(unittest.TestCase):
         if os.path.exists(TestFileStorageReload.test_path) is True:
             os.rename(TestFileStorageReload.test_path,
                       TestFileStorageReload.path)
-        if (TestFileStorageReload.flag == 1 and
-            os.path.exists(TestFileStorageInit.path) is True):
+        if ((TestFileStorageReload.flag == 1 and
+             os.path.exists(TestFileStorageInit.path))):
             os.remove(TestFileStorageReload.path)
 
     def test_reload(self):

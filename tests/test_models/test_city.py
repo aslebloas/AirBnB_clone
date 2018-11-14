@@ -1,27 +1,28 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
+from shutil import copyfile
 import json
 import os
-from shutil import copyfile
 import unittest
-from models.amenity import Amenity
+from models.city import City
 from datetime import datetime
 
 
-class TestAmenityModelInit(unittest.TestCase):
-    """Test for Amenity Instance Initialization"""
+class TestCityModelInit(unittest.TestCase):
+    """Test for City Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = Amenity()
+        self.model1 = City()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = Amenity()
+        self.model2 = City()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.dic25 = {'name': 'Erwin', 'my_number': 42,
-                               'state_id': 'CA', 'test': 'test'}
-        self.model3 = Amenity(**self.dic25)
+        self.model2.state_id = "cally"
+        self.dic25 = {'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                      'test': 'test'}
+        self.model3 = City(**self.dic25)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""
@@ -31,6 +32,12 @@ class TestAmenityModelInit(unittest.TestCase):
         self.assertEqual(self.model3.my_number, 42)
         self.assertIs(type(self.model3.test), str)
         self.assertEqual(self.model3.test, "test")
+
+    def test_attr_state_id(self):
+        """Tests attribute state Id"""
+        self.assertIs(type(self.model1.state_id), str)
+        self.assertEqual(self.model1.state_id, '')
+        self.assertEqual(self.model2.state_id, 'cally')
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -43,7 +50,7 @@ class TestAmenityModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
-        self.model5 = Amenity()
+        self.model5 = City()
         self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
@@ -58,9 +65,9 @@ class TestAmenityModelInit(unittest.TestCase):
         self.assertEqual(self.model2.my_number, 98)
 
     def test_kwargs(self):
-        """test create BaseModel from dictionary"""
+        """test create City from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = Amenity(**self.model_dic)
+        self.model3 = City(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -73,7 +80,7 @@ class TestAmenityModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = Amenity(**self.model_dic)
+        self.model3 = City(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -81,8 +88,8 @@ class TestAmenityModelInit(unittest.TestCase):
         pass
 
 
-class TestAmenityModelMethods(unittest.TestCase):
-    """Test for Amenity methods"""
+class TestCityModelMethods(unittest.TestCase):
+    """Test for City methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
     flag = 0
@@ -91,41 +98,41 @@ class TestAmenityModelMethods(unittest.TestCase):
     def setUpClass(cls):
         """Setup class instances"""
         # if file.json exists
-        if os.path.exists(TestAmenityModelMethods.path) is True:
+        if os.path.exists(TestCityModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestAmenityModelMethods.test_path) is True:
-                os.remove(TestAmenityModelMethods.test_path)
+            if os.path.exists(TestCityModelMethods.test_path) is True:
+                os.remove(TestCityModelMethods.test_path)
             # copy content of file.json to test_file.json
-            os.rename(TestAmenityModelMethods.path,
-                      TestAmenityModelMethods.test_path)
+            os.rename(TestCityModelMethods.path,
+                      TestCityModelMethods.test_path)
         else:
-            TestAmenityModelMethods.flag = 1
+            TestCityModelMethods.flag = 1
 
     @classmethod
     def tearDownClass(cls):
         """Teardown class instances"""
         # if copy of file.json exists and is not empty
-        if (os.path.exists(TestAmenityModelMethods.test_path)) is True:
+        if (os.path.exists(TestCityModelMethods.test_path)) is True:
             # remove file.json
-            os.remove(TestAmenityModelMethods.path)
+            os.remove(TestCityModelMethods.path)
             # copy content of test_file.json to file.json
-            os.rename(TestAmenityModelMethods.test_path,
-                      TestAmenityModelMethods.path)
-        if TestAmenityModelMethods.flag == 1:
-            os.remove(TestAmenityModelMethods.path)
+            os.rename(TestCityModelMethods.test_path,
+                      TestCityModelMethods.path)
+        if TestCityModelMethods.flag == 1:
+            os.remove(TestCityModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = Amenity()
+        self.model1 = City()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = Amenity()
+        self.model2 = City()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = Amenity()
+        self.model3 = City()
 
     def test_save(self):
-        """test save Amenity instance method"""
+        """test save City instance method"""
         self.model2.save()
         self.assertNotIn('updated_at', self.model1.__dict__)
         self.model1.save()
@@ -134,7 +141,7 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1.created_at), datetime)
 
     def test_to_dict(self):
-        """test to_dict BaseModel instance method"""
+        """test to_dict City instance method"""
         self.model1.save()
         self.model1_json = self.model1.to_dict()
         self.assertIs(type(self.model1_json['my_number']), int)
@@ -142,7 +149,7 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "Amenity")
+        self.assertEqual(self.model1_json['__class__'], "City")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
@@ -150,12 +157,14 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.model3_json = self.model3.to_dict()
         self.assertIs(type(self.model3_json['name']), str)
         self.assertEqual(self.model3_json['name'], '')
+        self.assertIs(type(self.model3_json['state_id']), str)
+        self.assertEqual(self.model3_json['state_id'], '')
 
     def test_json(self):
         """test formatting in the json file"""
         self.model1.save()
-        with open(TestAmenityModelMethods.path) as file:
-            self.assertIs(os.path.exists(TestAmenityModelMethods.path), True)
+        with open(TestCityModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestCityModelMethods.path), True)
             self.json_dict = json.load(file)
             for k, v in self.json_dict.items():
                 for key, value in v.items():

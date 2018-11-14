@@ -1,27 +1,27 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
-from shutil import copyfile
 import json
 import os
+from shutil import copyfile
 import unittest
-from models.state import State
+from models.amenity import Amenity
 from datetime import datetime
 
 
-class TestStateModelInit(unittest.TestCase):
-    """Test for BaseModel Instance Initialization"""
+class TestAmenityModelInit(unittest.TestCase):
+    """Test for Amenity Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = State()
+        self.model1 = Amenity()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = State()
+        self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.dic25 = {'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
-                             'test': 'test'}
-        self.model3 = State(**self.dic25)
+        self.dic25 = {'name': 'Erwin', 'my_number': 42,
+                      'state_id': 'CA', 'test': 'test'}
+        self.model3 = Amenity(**self.dic25)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""
@@ -43,7 +43,7 @@ class TestStateModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
-        self.model5 = State()
+        self.model5 = Amenity()
         self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
@@ -60,7 +60,7 @@ class TestStateModelInit(unittest.TestCase):
     def test_kwargs(self):
         """test create BaseModel from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = State(**self.model_dic)
+        self.model3 = Amenity(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -73,7 +73,7 @@ class TestStateModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = State(**self.model_dic)
+        self.model3 = Amenity(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -81,8 +81,8 @@ class TestStateModelInit(unittest.TestCase):
         pass
 
 
-class TestStateModelMethods(unittest.TestCase):
-    """Test for BaseModel methods"""
+class TestAmenityModelMethods(unittest.TestCase):
+    """Test for Amenity methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
     flag = 0
@@ -91,41 +91,41 @@ class TestStateModelMethods(unittest.TestCase):
     def setUpClass(cls):
         """Setup class instances"""
         # if file.json exists
-        if os.path.exists(TestStateModelMethods.path) is True:
+        if os.path.exists(TestAmenityModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestStateModelMethods.test_path) is True:
-                os.remove(TestStateModelMethods.test_path)
+            if os.path.exists(TestAmenityModelMethods.test_path) is True:
+                os.remove(TestAmenityModelMethods.test_path)
             # copy content of file.json to test_file.json
-            os.rename(TestStateModelMethods.path,
-                      TestStateModelMethods.test_path)
+            os.rename(TestAmenityModelMethods.path,
+                      TestAmenityModelMethods.test_path)
         else:
-            TestStateModelMethods.flag = 1
+            TestAmenityModelMethods.flag = 1
 
     @classmethod
     def tearDownClass(cls):
         """Teardown class instances"""
         # if copy of file.json exists and is not empty
-        if (os.path.exists(TestStateModelMethods.test_path)) is True:
+        if (os.path.exists(TestAmenityModelMethods.test_path)) is True:
             # remove file.json
-            os.remove(TestStateModelMethods.path)
+            os.remove(TestAmenityModelMethods.path)
             # copy content of test_file.json to file.json
-            os.rename(TestStateModelMethods.test_path,
-                      TestStateModelMethods.path)
-        if TestStateModelMethods.flag == 1:
-            os.remove(TestStateModelMethods.path)
+            os.rename(TestAmenityModelMethods.test_path,
+                      TestAmenityModelMethods.path)
+        if TestAmenityModelMethods.flag == 1:
+            os.remove(TestAmenityModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = State()
+        self.model1 = Amenity()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = State()
+        self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = State()
+        self.model3 = Amenity()
 
     def test_save(self):
-        """test save BaseModel instance method"""
+        """test save Amenity instance method"""
         self.model2.save()
         self.assertNotIn('updated_at', self.model1.__dict__)
         self.model1.save()
@@ -142,7 +142,7 @@ class TestStateModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "State")
+        self.assertEqual(self.model1_json['__class__'], "Amenity")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
@@ -154,8 +154,8 @@ class TestStateModelMethods(unittest.TestCase):
     def test_json(self):
         """test formatting in the json file"""
         self.model1.save()
-        with open(TestStateModelMethods.path) as file:
-            self.assertIs(os.path.exists(TestStateModelMethods.path), True)
+        with open(TestAmenityModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestAmenityModelMethods.path), True)
             self.json_dict = json.load(file)
             for k, v in self.json_dict.items():
                 for key, value in v.items():

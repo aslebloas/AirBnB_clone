@@ -5,39 +5,74 @@ from shutil import copyfile
 import json
 import os
 import unittest
-from models.city import City
+from models.review import Review
 from datetime import datetime
 
 
-class TestCityModelInit(unittest.TestCase):
-    """Test for City Instance Initialization"""
+class TestReviewModelInit(unittest.TestCase):
+    """Test for Review Instance Initialization"""
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = City()
+        self.model1 = Review()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = City()
+        self.model1.place_id = "traphouse"
+        self.model1.user_id = "killer mike"
+        self.model1.text = "great place to trap"
+        self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model2.state_id = "cally"
-        self.dic25 = {'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
-                            'test': 'test'}
-        self.model3 = City(**self.dic25)
+        self.model2.place_id = "mantion"
+        self.model2.user_id = "Bill Gates"
+        self.model2.text = "luxury"
+        self.model5 = Review()
+        self.dic25 = {'place_id': 'place', 'user_id': 'Gove',
+                      'text': 'blablabla', 'name': 'Erwin',
+                      'my_number': 42, 'state_id': 'CA',
+                      'test': 'test'}
+        self.model3 = Review(**self.dic25)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.place_id), str)
+        self.assertEqual(self.model3.place_id, 'place')
+        self.assertIs(type(self.model3.user_id), str)
+        self.assertEqual(self.model3.user_id, 'Gove')
+        self.assertIs(type(self.model3.text), str)
+        self.assertEqual(self.model3.text, 'blablabla')
         self.assertIs(type(self.model3.name), str)
-        self.assertEqual(self.model3.name, "Erwin")
+        self.assertEqual(self.model3.name, 'Erwin')
         self.assertIs(type(self.model3.my_number), int)
         self.assertEqual(self.model3.my_number, 42)
         self.assertIs(type(self.model3.test), str)
         self.assertEqual(self.model3.test, "test")
 
-    def test_attr_state_id(self):
-        """Tests attribute state Id"""
-        self.assertIs(type(self.model1.state_id), str)
-        self.assertEqual(self.model1.state_id, '')
-        self.assertEqual(self.model2.state_id, 'cally')
+    def test_att_place_id(self):
+        """tests attribuet place_id"""
+        self.assertIs(type(self.model1.text), str)
+        self.assertIs(type(self.model2.text), str)
+        self.assertIs(type(self.model5.text), str)
+        self.assertEqual(self.model1.text, "great place to trap")
+        self.assertEqual(self.model2.text, "luxury")
+        self.assertEqual(self.model5.text, '')
+
+    def test_att_user_id(self):
+        """tests attribuet user_id"""
+        self.assertIs(type(self.model1.user_id), str)
+        self.assertIs(type(self.model2.user_id), str)
+        self.assertIs(type(self.model5.user_id), str)
+        self.assertEqual(self.model1.user_id, "killer mike")
+        self.assertEqual(self.model2.user_id, "Bill Gates")
+        self.assertEqual(self.model5.user_id, '')
+
+    def test_att_place_id(self):
+        """tests attribuet place_id"""
+        self.assertIs(type(self.model1.place_id), str)
+        self.assertIs(type(self.model2.place_id), str)
+        self.assertIs(type(self.model5.place_id), str)
+        self.assertEqual(self.model1.place_id, "traphouse")
+        self.assertEqual(self.model2.place_id, "mantion")
+        self.assertEqual(self.model5.place_id, '')
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -50,8 +85,6 @@ class TestCityModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
-        self.model5 = City()
-        self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
         self.assertIs(type(self.model2.name), str)
@@ -65,9 +98,9 @@ class TestCityModelInit(unittest.TestCase):
         self.assertEqual(self.model2.my_number, 98)
 
     def test_kwargs(self):
-        """test create City from dictionary"""
+        """test create Review from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = City(**self.model_dic)
+        self.model3 = Review(**self.model_dic)
         self.assertIs(type(self.model3.created_at), datetime)
         self.assertIsNot(self.model3, self.model2)
         self.assertEqual(self.model3.id, self.model2.id)
@@ -80,7 +113,7 @@ class TestCityModelInit(unittest.TestCase):
     def test_str(self):
         """test str method"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = City(**self.model_dic)
+        self.model3 = Review(**self.model_dic)
         self.assertEqual(str(self.model2), str(self.model3))
 
     def tearDown(self):
@@ -88,8 +121,8 @@ class TestCityModelInit(unittest.TestCase):
         pass
 
 
-class TestCityModelMethods(unittest.TestCase):
-    """Test for City methods"""
+class TestReviewModelMethods(unittest.TestCase):
+    """Test for review methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
     flag = 0
@@ -98,39 +131,41 @@ class TestCityModelMethods(unittest.TestCase):
     def setUpClass(cls):
         """Setup class instances"""
         # if file.json exists
-        if os.path.exists(TestCityModelMethods.path) is True:
+        if os.path.exists(TestReviewModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestCityModelMethods.test_path) is True:
-                os.remove(TestCityModelMethods.test_path)
+            if os.path.exists(TestReviewModelMethods.test_path) is True:
+                os.remove(TestReviewModelMethods.test_path)
             # copy content of file.json to test_file.json
-            os.rename(TestCityModelMethods.path, TestCityModelMethods.test_path)
+            os.rename(TestReviewModelMethods.path,
+                      TestReviewModelMethods.test_path)
         else:
-            TestCityModelMethods.flag = 1
+            TestReviewModelMethods.flag = 1
 
     @classmethod
     def tearDownClass(cls):
         """Teardown class instances"""
         # if copy of file.json exists and is not empty
-        if (os.path.exists(TestCityModelMethods.test_path)) is True:
+        if (os.path.exists(TestReviewModelMethods.test_path)) is True:
             # remove file.json
-            os.remove(TestCityModelMethods.path)
+            os.remove(TestReviewModelMethods.path)
             # copy content of test_file.json to file.json
-            os.rename(TestCityModelMethods.test_path, TestCityModelMethods.path)
-        if TestCityModelMethods.flag == 1:
-            os.remove(TestCityModelMethods.path)
+            os.rename(TestReviewModelMethods.test_path,
+                      TestReviewModelMethods.path)
+        if TestReviewModelMethods.flag == 1:
+            os.remove(TestReveiwModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
-        self.model1 = City()
+        self.model1 = Review()
         self.model1.name = "Holberton"
         self.model1.my_number = 89
-        self.model2 = City()
+        self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = City()
+        self.model3 = Review()
 
     def test_save(self):
-        """test save City instance method"""
+        """test save Review instance method"""
         self.model2.save()
         self.assertNotIn('updated_at', self.model1.__dict__)
         self.model1.save()
@@ -139,7 +174,7 @@ class TestCityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1.created_at), datetime)
 
     def test_to_dict(self):
-        """test to_dict City instance method"""
+        """test to_dict REveiw instance method"""
         self.model1.save()
         self.model1_json = self.model1.to_dict()
         self.assertIs(type(self.model1_json['my_number']), int)
@@ -147,22 +182,24 @@ class TestCityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['name']), str)
         self.assertEqual(self.model1_json['name'], "Holberton")
         self.assertIs(type(self.model1_json['__class__']), str)
-        self.assertEqual(self.model1_json['__class__'], "City")
+        self.assertEqual(self.model1_json['__class__'], "Review")
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
         self.model3.save()
         self.model3_json = self.model3.to_dict()
-        self.assertIs(type(self.model3_json['name']), str)
-        self.assertEqual(self.model3_json['name'], '')
-        self.assertIs(type(self.model3_json['state_id']), str)
-        self.assertEqual(self.model3_json['state_id'], '')
+        self.assertIs(type(self.model3_json['place_id']), str)
+        self.assertEqual(self.model3_json['place_id'], '')
+        self.assertIs(type(self.model3_json['user_id']), str)
+        self.assertEqual(self.model3_json['user_id'], '')
+        self.assertIs(type(self.model3_json['text']), str)
+        self.assertEqual(self.model3_json['text'], '')
 
     def test_json(self):
         """test formatting in the json file"""
         self.model1.save()
-        with open(TestCityModelMethods.path) as file:
-            self.assertIs(os.path.exists(TestCityModelMethods.path), True)
+        with open(TestReviewModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestReviewModelMethods.path), True)
             self.json_dict = json.load(file)
             for k, v in self.json_dict.items():
                 for key, value in v.items():
