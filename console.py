@@ -50,33 +50,37 @@ class HBNBCommand(cmd.Cmd):
                                 """ Use of update with dictionary"""
                                 dic = storage.all()
                                 key = typ + '.' + argss[0][1:-1]
-                                obj = dic[key]
-                                dicc = obj.to_dict()
-                                """ formating dictionary str for use"""
-                                argss[1] = argss[1][2:-1]
-                                print(argss[1])
-                                key_val = argss[1].split(', ')
-                                for i in key_val:
-                                    """ updateing object dictionary"""
-                                    k_v = i.split(': ')
-                                    dicc[k_v[0][1:-1]] = k_v[1][1:-1]
-                                """ making new Model with updated dictionary"""
-                                if typ == "BaseModel":
-                                    new = BaseModel(**dicc)
-                                elif typ == "User":
-                                    new = User(**dicc)
-                                elif typ == "State":
-                                    new = State(**dicc)
-                                elif typ == "City":
-                                    new = City(**dicc)
-                                elif typ == "Amenity":
-                                    new = Amenity(**dicc)
-                                elif typ == "Place":
-                                    new = Place(**dicc)
-                                elif typ == "Review":
-                                    new = Review(**dicc)
-                                """replace old obj with new one"""
-                                new.save()
+                                try:
+                                    obj = dic[key]
+                                    dicc = obj.to_dict()
+                                    """ formating dictionary str for use"""
+                                    argss[1] = argss[1][2:-1]
+                                    print(argss[1])
+                                    key_val = argss[1].split(', ')
+                                    for i in key_val:
+                                        """ updateing object dictionary"""
+                                        k_v = i.split(': ')
+                                        dicc[k_v[0][1:-1]] = k_v[1][1:-1]
+                                    """ making new Model with
+                                    updated dictionary"""
+                                    if typ == "BaseModel":
+                                        new = BaseModel(**dicc)
+                                    elif typ == "User":
+                                        new = User(**dicc)
+                                    elif typ == "State":
+                                        new = State(**dicc)
+                                    elif typ == "City":
+                                        new = City(**dicc)
+                                    elif typ == "Amenity":
+                                        new = Amenity(**dicc)
+                                    elif typ == "Place":
+                                        new = Place(**dicc)
+                                    elif typ == "Review":
+                                        new = Review(**dicc)
+                                    """replace old obj with new one"""
+                                    new.save()
+                                except:
+                                    print("** Bad Syntax **")
                             else:
                                 """update without dictionary"""
                                 nargss = argss[1].split(',')
