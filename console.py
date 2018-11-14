@@ -43,14 +43,39 @@ class HBNBCommand(cmd.Cmd):
                     elif args[0] == 'update':
                         argss = args[1].split(',')
                         if len(argss) > 1:
-                            argss[1] = argss[1][1:]
-                            if len(argss) > 2:
-                                argss[2] = argss[2][1:]
-                                self.do_update(typ + ' ' + argss[0] +
-                                               ' ' + argss[1] + ' ' + argss[2])
+                            if argss[1][0] == '{':
+                                dic = storage.all()
+                                key = argss[0] + '.' + typ
+                                obj = dic[key]
+                                dicc = obj.to_dict()
+                                di = dict(argss[1])
+                                for k, v in di:
+                                    dicc[k] = v
+                                if typ == "BaseModel":
+                                    new = BaseModel(**dicc)
+                                elif typ == "User":
+                                    new = User(**dicc)
+                                elif typ == "State":
+                                    new = State(**dicc)
+                                elif typ == "City":
+                                    new = City(**dicc)
+                                elif typ == "Amenity":
+                                    new = Amenity(**dicc)
+                                elif typ == "Place":
+                                    new = Place(**dicc)
+                                elif typ == "Review":
+                                    new = Review(**dicc)
+                                new.save()
                             else:
-                                self.do_update(typ + ' ' + argss[0] + ' ' +
-                                               argss[1])
+                                argss[1] = argss[1][1:]
+                                if len(argss) > 2:
+                                    argss[2] = argss[2][1:]
+                                    self.do_update(typ + ' ' + argss[0] +
+                                                   ' ' + argss[1] + ' ' +
+                                                   argss[2])
+                                else:
+                                    self.do_update(typ + ' ' + argss[0] + ' ' +
+                                                   argss[1])
                         else:
                             self.do_update(typ + ' ' + argss[0])
                     elif args[0] == 'count':
