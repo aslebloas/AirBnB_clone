@@ -19,8 +19,9 @@ class TestBaseModelInit(unittest.TestCase):
         self.model2 = BaseModel()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = BaseModel({'name': 'Erwin', 'my_number': 42,
-                                 'state_id': 'CA', 'test': 'test'})
+        self.dic25 = {'name': 'Erwin', 'my_number': 42,
+                                 'state_id': 'CA', 'test': 'test'}
+        self.model3 = BaseModel(**self.dic25)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""

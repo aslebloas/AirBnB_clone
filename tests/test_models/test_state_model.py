@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
+from shutil import copyfile
+import json
+import os
 import unittest
 from models.state import State
 from datetime import datetime
@@ -16,8 +19,9 @@ class TestStateModelInit(unittest.TestCase):
         self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = State({'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
-                             'test': 'test'})
+        self.dic25 = {'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                             'test': 'test'}
+        self.model3 = State(**self.dic25)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""
@@ -143,8 +147,22 @@ class TestStateModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
         self.model3.save()
+        self.model3_json = self.model3.to_dict()
         self.assertIs(type(self.model3_json['name']), str)
         self.assertEqual(self.model3_json['name'], '')
+
+    def test_json(self):
+        """test formatting in the json file"""
+        self.model1.save()
+        with open(TestStateModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestStateModelMethods.path), True)
+            self.json_dict = json.load(file)
+            for k, v in self.json_dict.items():
+                for key, value in v.items():
+                    if key == "created_at":
+                        self.assertIs(type(value), str)
+                    elif key == "updated_at":
+                        self.assertIs(type(value), str)
 
 if __name__ == '__main__':
     unittest.main()
