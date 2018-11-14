@@ -88,7 +88,8 @@ class TestCityModelMethods(unittest.TestCase):
             if os.path.exists(TestCityModelMethods.test_path) is True:
                 os.remove(TestCityModelMethods.test_path)
             # copy content of file.json to test_file.json
-            os.rename(TestCityModelMethods.path, TestCityModelMethods.test_path)
+            os.rename(TestCityModelMethods.path,
+                      TestCityModelMethods.test_path)
         else:
             TestCityModelMethods.flag = 1
 
@@ -100,7 +101,8 @@ class TestCityModelMethods(unittest.TestCase):
             # remove file.json
             os.remove(TestCityModelMethods.path)
             # copy content of test_file.json to file.json
-            os.rename(TestCityModelMethods.test_path, TestCityModelMethods.path)
+            os.rename(TestCityModelMethods.test_path,
+                      TestCityModelMethods.path)
         if TestCityModelMethods.flag == 1:
             os.remove(TestCityModelMethods.path)
 
