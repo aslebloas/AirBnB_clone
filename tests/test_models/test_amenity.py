@@ -43,8 +43,6 @@ class TestAmenityModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
-        self.model5 = Amenity()
-        self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
         self.assertIs(type(self.model2.name), str)
@@ -122,7 +120,6 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = Amenity()
 
     def test_save(self):
         """test save Amenity instance method"""
@@ -148,8 +145,6 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['id']), str)
         self.model3.save()
         self.model3_json = self.model3.to_dict()
-        self.assertIs(type(self.model3_json['name']), str)
-        self.assertEqual(self.model3_json['name'], '')
 
     def test_json(self):
         """test formatting in the json file"""

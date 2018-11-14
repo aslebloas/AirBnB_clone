@@ -35,8 +35,6 @@ class TestCityModelInit(unittest.TestCase):
 
     def test_attr_state_id(self):
         """Tests attribute state Id"""
-        self.assertIs(type(self.model1.state_id), str)
-        self.assertEqual(self.model1.state_id, '')
         self.assertEqual(self.model2.state_id, 'cally')
 
     def test_attr_id(self):
@@ -50,8 +48,6 @@ class TestCityModelInit(unittest.TestCase):
 
     def test_attr_name(self):
         """test if attribute name are correctly set up"""
-        self.model5 = City()
-        self.assertEqual(self.model5.name, '')
         self.assertIs(type(self.model1.name), str)
         self.assertEqual(self.model1.name, "Holberton")
         self.assertIs(type(self.model2.name), str)
@@ -129,7 +125,6 @@ class TestCityModelMethods(unittest.TestCase):
         self.model2 = City()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = City()
 
     def test_save(self):
         """test save City instance method"""
@@ -153,12 +148,6 @@ class TestCityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-        self.model3.save()
-        self.model3_json = self.model3.to_dict()
-        self.assertIs(type(self.model3_json['name']), str)
-        self.assertEqual(self.model3_json['name'], '')
-        self.assertIs(type(self.model3_json['state_id']), str)
-        self.assertEqual(self.model3_json['state_id'], '')
 
     def test_json(self):
         """test formatting in the json file"""
