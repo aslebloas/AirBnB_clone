@@ -49,11 +49,12 @@ class HBNBCommand(cmd.Cmd):
                             if argss[1][1] == '{':
                                 """ Use of update with dictionary"""
                                 dic = storage.all()
-                                key = typ + '.' + argss[0]
+                                key = typ + '.' + argss[0][1:-1]
                                 obj = dic[key]
                                 dicc = obj.to_dict()
                                 """ formating dictionary str for use"""
                                 argss[1] = argss[1][2:-1]
+                                print(argss[1])
                                 key_val = argss[1].split(', ')
                                 for i in key_val:
                                     """ updateing object dictionary"""
@@ -78,15 +79,16 @@ class HBNBCommand(cmd.Cmd):
                                 new.save()
                             else:
                                 """update without dictionary"""
-                                argss[1] = argss[1][1:]
-                                if len(argss) > 2:
-                                    argss[2] = argss[2][1:]
+                                nargss = argss[1].split(',')
+                                nargss[0] = nargss[0][1:]
+                                if len(nargss) > 1:
+                                    nargss[1] = nargss[1][1:]
                                     self.do_update(typ + ' ' + argss[0] +
-                                                   ' ' + argss[1] + ' ' +
-                                                   argss[2])
+                                                   ' ' + nargss[0] + ' ' +
+                                                   nargss[1])
                                 else:
                                     self.do_update(typ + ' ' + argss[0] + ' ' +
-                                                   argss[1])
+                                                   nargss[0])
                         else:
                             """update without dictionary"""
                             self.do_update(typ + ' ' + argss[0])
