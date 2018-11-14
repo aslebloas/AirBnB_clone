@@ -11,10 +11,8 @@ class FileStorage():
     classes = ['BaseModel', 'User', 'State', 'City',
                'Amenity', 'Place', 'Review']
 
-    def __init__(self):
-        """initializes instance"""
-        self.__file_path = os.path.abspath("file.json")
-        self.__objects = {}
+    __file_path = os.path.abspath("file.json")
+    __objects = {}
 
     def reload(self):
         """deserializes the JSON file to __objects"""
