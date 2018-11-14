@@ -27,7 +27,10 @@ class HBNBCommand(cmd.Cmd):
     float_atts = ["latitude", "longitude"]
 
     def default(self, line):
-        """ the default function use model_type.function(args)"""
+        """ the default function use model_type.function(args)
+        Args:
+            line: line of arguments
+        """
         if len(line) != 0:
             """formats the line for later use"""
             arg = line.split('.')
@@ -221,8 +224,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Deletes a Spacific Object
-        """
-        """
         Args:
             line: Command line
         """
@@ -248,8 +249,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """Creates a new Model
-        """
-        """
         Args:
             line: command line
         """
