@@ -27,13 +27,16 @@ class HBNBCommand(cmd.Cmd):
     float_atts = ["latitude", "longitude"]
 
     def default(self, line):
+        """ the default function use model_type.function(args)"""
         if len(line) != 0:
+            """formats the line for later use"""
             arg = line.split('.')
             typ = arg[0]
             if len(arg) != 1:
                 args = arg[1].split('(')
                 if len(args) != 1:
                     args[1] = args[1][:-1]
+                    """checks the function type to call or do"""
                     if args[0] == 'all':
                         self.do_all(typ)
                     elif args[0] == 'show':
@@ -41,16 +44,22 @@ class HBNBCommand(cmd.Cmd):
                     elif args[0] == 'destroy':
                         self.do_destroy(typ + ' ' + args[1])
                     elif args[0] == 'update':
-                        argss = args[1].split(',')
+                        argss = args[1].split(',', 1)
                         if len(argss) > 1:
-                            if argss[1][0] == '{':
+                            if argss[1][1] == '{':
+                                """ Use of update with dictionary"""
                                 dic = storage.all()
-                                key = argss[0] + '.' + typ
+                                key = typ + '.' + argss[0]
                                 obj = dic[key]
                                 dicc = obj.to_dict()
-                                di = dict(argss[1])
-                                for k, v in di:
-                                    dicc[k] = v
+                                """ formating dictionary str for use"""
+                                argss[1] = argss[1][2:-1]
+                                key_val = argss[1].split(', ')
+                                for i in key_val:
+                                    """ updateing object dictionary"""
+                                    k_v = i.split(': ')
+                                    dicc[k_v[0][1:-1]] = k_v[1][1:-1]
+                                """ making new Model with updated dictionary"""
                                 if typ == "BaseModel":
                                     new = BaseModel(**dicc)
                                 elif typ == "User":
@@ -65,8 +74,10 @@ class HBNBCommand(cmd.Cmd):
                                     new = Place(**dicc)
                                 elif typ == "Review":
                                     new = Review(**dicc)
+                                """replace old obj with new one"""
                                 new.save()
                             else:
+                                """update without dictionary"""
                                 argss[1] = argss[1][1:]
                                 if len(argss) > 2:
                                     argss[2] = argss[2][1:]
@@ -77,6 +88,7 @@ class HBNBCommand(cmd.Cmd):
                                     self.do_update(typ + ' ' + argss[0] + ' ' +
                                                    argss[1])
                         else:
+                            """update without dictionary"""
                             self.do_update(typ + ' ' + argss[0])
                     elif args[0] == 'count':
                         dic = storage.all()
@@ -87,6 +99,7 @@ class HBNBCommand(cmd.Cmd):
                                 count += 1
                         print(count)
                     else:
+                        """errors"""
                         print('*** Unknown syntax: ' + line)
                 else:
                     print('*** Unknown syntax: ' + line)

@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
+from shutil import copyfile
+import json
+import os
 import unittest
 from models.review import Review
 from datetime import datetime
@@ -23,6 +26,26 @@ class TestReviewModelInit(unittest.TestCase):
         self.model2.user_id = "Bill Gates"
         self.model2.text = "luxury"
         self.model5 = Review()
+        self.dic25 = {'place_id': 'place', 'user_id': 'Gove',
+                            'text': 'blablabla', 'name': 'Erwin',
+                            'my_number': 42, 'state_id': 'CA',
+                            'test': 'test'}
+        self.model3 = Review(**self.dic25)
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.place_id), str)
+        self.assertEqual(self.model3.place_id, 'place')
+        self.assertIs(type(self.model3.user_id), str)
+        self.assertEqual(self.model3.user_id, 'Gove')
+        self.assertIs(type(self.model3.text), str)
+        self.assertEqual(self.model3.text, 'blablabla')
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, 'Erwin')
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
 
     def test_att_place_id(self):
         """tests attribuet place_id"""
@@ -128,7 +151,7 @@ class TestReviewModelMethods(unittest.TestCase):
             # copy content of test_file.json to file.json
             os.rename(TestReviewModelMethods.test_path,
                       TestReviewModelMethods.path)
-        if TestReveiwModelMethods.flag == 1:
+        if TestReviewModelMethods.flag == 1:
             os.remove(TestReveiwModelMethods.path)
 
     def setUp(self):
@@ -139,6 +162,7 @@ class TestReviewModelMethods(unittest.TestCase):
         self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = Review()
 
     def test_save(self):
         """test save Review instance method"""
@@ -162,6 +186,27 @@ class TestReviewModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
+        self.model3.save()
+        self.model3_json = self.model3.to_dict()
+        self.assertIs(type(self.model3_json['place_id']), str)
+        self.assertEqual(self.model3_json['place_id'], '')
+        self.assertIs(type(self.model3_json['user_id']), str)
+        self.assertEqual(self.model3_json['user_id'], '')
+        self.assertIs(type(self.model3_json['text']), str)
+        self.assertEqual(self.model3_json['text'], '')
+
+    def test_json(self):
+        """test formatting in the json file"""
+        self.model1.save()
+        with open(TestReviewModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestReviewModelMethods.path), True)
+            self.json_dict = json.load(file)
+            for k, v in self.json_dict.items():
+                for key, value in v.items():
+                    if key == "created_at":
+                        self.assertIs(type(value), str)
+                    elif key == "updated_at":
+                        self.assertIs(type(value), str)
 
 if __name__ == '__main__':
     unittest.main()

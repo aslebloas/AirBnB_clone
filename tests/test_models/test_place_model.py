@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
+
+from shutil import copyfile
+import os
+import json
 import unittest
 from models.place import Place
 from datetime import datetime
@@ -36,6 +40,43 @@ class TestPlaceModelInit(unittest.TestCase):
         self.model2.latitude = 88.88
         self.model2.longitude = 88.88
         self.model2.amenity_ids = ['everything']
+        self.dic25 = {'city_id': 'SanFran', 'user_id': 'Gove',
+                            'description': 'nice', 'number_rooms': 7,
+                            'number_bathrooms': 7, 'max_guest': 7,
+                            'price_by_night': 7, 'longitude': 7.7,
+                            'latitude': 7.7, 'amenity_ids': ['bla', 'bla'],
+                            'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                            'test': 'test'}
+        self.model3 = Place(**self.dic25)
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
+        self.assertIs(type(self.model3.city_id), str)
+        self.assertEqual(self.model3.city_id, 'SanFran')
+        self.assertIs(type(self.model3.user_id), str)
+        self.assertEqual(self.model3.user_id, 'Gove')
+        self.assertIs(type(self.model3.description), str)
+        self.assertEqual(self.model3.description, 'nice')
+        self.assertIs(type(self.model3.number_rooms), int)
+        self.assertEqual(self.model3.number_rooms, 7)
+        self.assertIs(type(self.model3.number_bathrooms), int)
+        self.assertEqual(self.model3.number_bathrooms, 7)
+        self.assertIs(type(self.model3.max_guest), int)
+        self.assertEqual(self.model3.max_guest, 7)
+        self.assertIs(type(self.model3.price_by_night), int)
+        self.assertEqual(self.model3.price_by_night, 7)
+        self.assertIs(type(self.model3.latitude), float)
+        self.assertEqual(self.model3.latitude, 7.7)
+        self.assertIs(type(self.model3.longitude), float)
+        self.assertEqual(self.model3.longitude, 7.7)
+        self.assertIs(type(self.model3.amenity_ids), list)
+        self.assertEqual(self.model3.amenity_ids, ['bla', 'bla'])
 
     def test_attr_amenity_ids(self):
         """tests attribute amenity_ids"""
@@ -226,6 +267,7 @@ class TestPlaceModelMethods(unittest.TestCase):
         self.model2 = Place()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = Place()
 
     def test_save(self):
         """test save Place instance method"""
@@ -249,6 +291,44 @@ class TestPlaceModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
+        self.model3.save()
+        self.model3_json = self.model3.to_dict()
+        self.assertIs(type(self.model3_json['name']), str)
+        self.assertEqual(self.model3_json['name'], '')
+        self.assertIs(type(self.model3_json['city_id']), str)
+        self.assertEqual(self.model3_json['city_id'], '')
+        self.assertIs(type(self.model3_json['user_id']), str)
+        self.assertEqual(self.model3_json['user_id'], '')
+        self.assertIs(type(self.model3_json['description']), str)
+        self.assertEqual(self.model3_json['description'], '')
+        self.assertIs(type(self.model3_json['number_rooms']), int)
+        self.assertEqual(self.model3_json['number_rooms'], 0)
+        self.assertIs(type(self.model3_json['number_bathrooms']), int)
+        self.assertEqual(self.model3_json['number_bathrooms'], 0)
+        self.assertIs(type(self.model3_json['max_guest']), int)
+        self.assertEqual(self.model3_json['max_guest'], 0)
+        self.assertIs(type(self.model3_json['price_by_night']), int)
+        self.assertEqual(self.model3_json['price_by_night'], 0)
+        self.assertIs(type(self.model3_json['latitude']), float)
+        self.assertEqual(self.model3_json['latitude'], 0.0)
+        self.assertIs(type(self.model3_json['longitude']), float)
+        self.assertEqual(self.model3_json['longitude'], 0.0)
+        self.assertIs(type(self.model3_json['amenity_ids']), list)
+        self.assertEqual(self.model3_json['amenity_ids'], [])
+
+    def test_json(self):
+        """test formatting in the json file"""
+        self.model1.save()
+        with open(TestPlaceModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestPlaceModelMethods.path), True)
+            self.json_dict = json.load(file)
+            for k, v in self.json_dict.items():
+                for key, value in v.items():
+                    if key == "created_at":
+                        self.assertIs(type(value), str)
+                    elif key == "updated_at":
+                        self.assertIs(type(value), str)
+
 
 if __name__ == '__main__':
     unittest.main()
