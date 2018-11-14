@@ -25,7 +25,6 @@ class TestReviewModelInit(unittest.TestCase):
         self.model2.place_id = "mantion"
         self.model2.user_id = "Bill Gates"
         self.model2.text = "luxury"
-        self.model5 = Review()
         self.dic25 = {'place_id': 'place', 'user_id': 'Gove',
                       'text': 'blablabla', 'name': 'Erwin',
                       'my_number': 42, 'state_id': 'CA',
@@ -51,28 +50,22 @@ class TestReviewModelInit(unittest.TestCase):
         """tests attribuet place_id"""
         self.assertIs(type(self.model1.text), str)
         self.assertIs(type(self.model2.text), str)
-        self.assertIs(type(self.model5.text), str)
         self.assertEqual(self.model1.text, "great place to trap")
         self.assertEqual(self.model2.text, "luxury")
-        self.assertEqual(self.model5.text, '')
 
     def test_att_user_id(self):
         """tests attribuet user_id"""
         self.assertIs(type(self.model1.user_id), str)
         self.assertIs(type(self.model2.user_id), str)
-        self.assertIs(type(self.model5.user_id), str)
         self.assertEqual(self.model1.user_id, "killer mike")
         self.assertEqual(self.model2.user_id, "Bill Gates")
-        self.assertEqual(self.model5.user_id, '')
 
     def test_att_place_id(self):
         """tests attribuet place_id"""
         self.assertIs(type(self.model1.place_id), str)
         self.assertIs(type(self.model2.place_id), str)
-        self.assertIs(type(self.model5.place_id), str)
         self.assertEqual(self.model1.place_id, "traphouse")
         self.assertEqual(self.model2.place_id, "mantion")
-        self.assertEqual(self.model5.place_id, '')
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -162,7 +155,6 @@ class TestReviewModelMethods(unittest.TestCase):
         self.model2 = Review()
         self.model2.name = "Betty"
         self.model2.my_number = 98
-        self.model3 = Review()
 
     def test_save(self):
         """test save Review instance method"""
@@ -186,14 +178,6 @@ class TestReviewModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-        self.model3.save()
-        self.model3_json = self.model3.to_dict()
-        self.assertIs(type(self.model3_json['place_id']), str)
-        self.assertEqual(self.model3_json['place_id'], '')
-        self.assertIs(type(self.model3_json['user_id']), str)
-        self.assertEqual(self.model3_json['user_id'], '')
-        self.assertIs(type(self.model3_json['text']), str)
-        self.assertEqual(self.model3_json['text'], '')
 
     def test_json(self):
         """test formatting in the json file"""
