@@ -4,12 +4,11 @@ from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """User Class"""
-    def __init__(self, *args, **kwargs):
-        """Instance initialization"""
-        self.email = ""
-        self.password = ""
-        self.first_name = ""
-        self.last_name = ""
-
+    """User Class with class attributes"""
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
+    def init(self):
+        """init with dictionary"""
         super().__init__(**kwargs)
