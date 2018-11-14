@@ -78,15 +78,16 @@ class HBNBCommand(cmd.Cmd):
                                 new.save()
                             else:
                                 """update without dictionary"""
-                                argss[1] = argss[1][1:]
-                                if len(argss) > 2:
-                                    argss[2] = argss[2][1:]
+                                nargss = argss[1].split(',')
+                                nargss[0] = nargss[0][1:]
+                                if len(nargss) > 1:
+                                    nargss[1] = nargss[1][1:]
                                     self.do_update(typ + ' ' + argss[0] +
-                                                   ' ' + argss[1] + ' ' +
-                                                   argss[2])
+                                                   ' ' + nargss[0] + ' ' +
+                                                   nargss[1])
                                 else:
                                     self.do_update(typ + ' ' + argss[0] + ' ' +
-                                                   argss[1])
+                                                   nargss[0])
                         else:
                             """update without dictionary"""
                             self.do_update(typ + ' ' + argss[0])
