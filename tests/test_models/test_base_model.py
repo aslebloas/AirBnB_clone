@@ -19,8 +19,15 @@ class TestBaseModelInit(unittest.TestCase):
         self.model2.name = "Betty"
         self.model2.my_number = 98
         self.dic25 = {'name': 'Erwin', 'my_number': 42,
-                      'state_id': 'CA', 'test': 'test'}
+                      'state_id': 'CA', 'test': 'test',
+                      'my_float': 2.3}
         self.model3 = BaseModel(**self.dic25)
+
+    def test_class(self):
+        """Test object classes"""
+        self.assertIsInstance(self.model1, BaseModel)
+        self.assertIsInstance(self.model2, BaseModel)
+        self.assertIsInstance(self.model3, BaseModel)
 
     def test_dict_init(self):
         """testing the dictionary initilization of this model"""
@@ -30,6 +37,8 @@ class TestBaseModelInit(unittest.TestCase):
         self.assertEqual(self.model3.my_number, 42)
         self.assertIs(type(self.model3.test), str)
         self.assertEqual(self.model3.test, "test")
+        self.assertIs(type(self.model3.my_float), float)
+        self.assertEqual(self.model3.my_float, 2.3)
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -57,17 +66,17 @@ class TestBaseModelInit(unittest.TestCase):
     def test_kwargs(self):
         """test create BaseModel from dictionary"""
         self.model_dic = self.model2.to_dict()
-        self.model3 = BaseModel(**self.model_dic)
         self.model4 = BaseModel({})
-        self.assertIs(type(self.model3.created_at), datetime)
-        self.assertIsNot(self.model3, self.model2)
-        self.assertEqual(self.model3.id, self.model2.id)
-        self.assertEqual(self.model3.created_at, self.model2.created_at)
-        self.assertEqual(self.model3.name, self.model2.name)
-        self.assertEqual(self.model3.my_number, self.model2.my_number)
+        self.model5 = BaseModel(**self.model_dic)
+
+        self.assertIs(type(self.model5.created_at), datetime)
+        self.assertIsNot(self.model5, self.model2)
+        self.assertEqual(self.model5.id, self.model2.id)
+        self.assertEqual(self.model5.created_at, self.model2.created_at)
+        self.assertEqual(self.model5.name, self.model2.name)
+        self.assertEqual(self.model5.my_number, self.model2.my_number)
         self.assertNotIn('updated_at', self.model_dic)
         self.assertIn('id', self.model4.__dict__)
-        #TODO: test if dic is not compliant? ie: no id...
 
     def test_str(self):
         """test str method"""

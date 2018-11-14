@@ -143,8 +143,6 @@ class TestAmenityModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
-        self.model3.save()
-        self.model3_json = self.model3.to_dict()
 
     def test_json(self):
         """test formatting in the json file"""

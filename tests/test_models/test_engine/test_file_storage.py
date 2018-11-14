@@ -3,6 +3,7 @@
 import os
 import unittest
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 from models import storage
 
@@ -17,7 +18,7 @@ class TestFileStorageInit(unittest.TestCase):
     def setUpClass(cls):
         """Class setup method"""
         cls.storage = FileStorage()
-        # if file exist, make a copy of it and remove it
+        # if json file exist, make a copy of it and remove it
         if os.path.exists(TestFileStorageInit.path) is True:
             if os.path.exists(TestFileStorageInit.test_path):
                 os.remove(TestFileStorageInit.test_path)
@@ -39,10 +40,6 @@ class TestFileStorageInit(unittest.TestCase):
 
     def test_init(self):
         self.assertIs(
-            type(TestFileStorageInit.storage._FileStorage__objects), dict)
-        self.assertEqual(TestFileStorageInit.storage._FileStorage__objects, {})
-
-        self.assertIs(
             type(TestFileStorageInit.storage._FileStorage__file_path), str)
         self.assertEqual(
             TestFileStorageInit.storage._FileStorage__file_path,
@@ -61,8 +58,10 @@ class TestFileStorageReload(unittest.TestCase):
         cls.storage = FileStorage()
         # if file exist, make a copy of it and remove it
         if os.path.exists(TestFileStorageReload.path) is True:
+            # remove the previous test file
             if os.path.exists(TestFileStorageReload.test_path):
                 os.remove(TestFileStorageReload.test_path)
+            # copy file to the copy
             os.rename(TestFileStorageReload.path,
                       TestFileStorageReload.test_path)
         else:
@@ -80,9 +79,25 @@ class TestFileStorageReload(unittest.TestCase):
             os.remove(TestFileStorageReload.path)
 
     def test_reload(self):
-        """Test if the reload function works"""
+        """test reload"""
         self.all_objs = storage.all()
-        self.assertEqual(len(self.all_objs), 0)
+#        self.assertEqual(len(self.all_objs), 0)
+        my_model = BaseModel()
+        my_model.name = "Holberton"
+        my_model.my_number = 98
+        my_model.my_float = 2.3
+
+        my_user = User()
+        my_user.first_name = "Betty"
+        my_user.last_name = "Holberton"
+        my_user.email = "airbnb@holbertonshool.com"
+        my_user.password = "root"
+
+        my_model.save()
+        my_user.save()
+
+        self.all_objs = storage.all()
+        self.assertTrue(len(self.all_objs) > 0)
 
 if __name__ == "__main__":
     unittest.main()
