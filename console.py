@@ -49,11 +49,12 @@ class HBNBCommand(cmd.Cmd):
                             if argss[1][1] == '{':
                                 """ Use of update with dictionary"""
                                 dic = storage.all()
-                                key = typ + '.' + argss[0]
+                                key = typ + '.' + argss[0][1:-1]
                                 obj = dic[key]
                                 dicc = obj.to_dict()
                                 """ formating dictionary str for use"""
                                 argss[1] = argss[1][2:-1]
+                                print(argss[1])
                                 key_val = argss[1].split(', ')
                                 for i in key_val:
                                     """ updateing object dictionary"""
