@@ -70,14 +70,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
-        """
-        """
         Args:
             line: line argument
         """
 
-        """ Need add More once More models exist"""
-        args = line.split(' ')
+        args = line.split(' ', maxsplit=3)
         if len(line) == 0:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.models:
@@ -85,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) == 1:
             print("** instance id missing **")
         else:
-            dic = storage.all()
+            dic = storage.all().copy()
             key = args[0] + '.' + args[1]
             if key in dic:
                 if len(args) == 2:
