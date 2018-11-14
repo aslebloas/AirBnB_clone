@@ -3,5 +3,5 @@ from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """State Class"""
+    """Amenity Class"""
     name = ''
