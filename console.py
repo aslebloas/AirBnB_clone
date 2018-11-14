@@ -55,7 +55,6 @@ class HBNBCommand(cmd.Cmd):
                                     dicc = obj.to_dict()
                                     """ formating dictionary str for use"""
                                     argss[1] = argss[1][2:-1]
-                                    print(argss[1])
                                     key_val = argss[1].split(', ')
                                     for i in key_val:
                                         """ updateing object dictionary"""
