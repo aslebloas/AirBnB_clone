@@ -84,7 +84,8 @@ class TestBaseModelMethods(unittest.TestCase):
             if os.path.exists(TestBaseModelMethods.test_path) is True:
                 os.remove(TestBaseModelMethods.test_path)
             # copy content of file.json to test_file.json
-            os.rename(TestBaseModelMethods.path, TestBaseModelMethods.test_path)
+            os.rename(TestBaseModelMethods.path,
+                      TestBaseModelMethods.test_path)
         else:
             TestBaseModelMethods.flag = 1
 
@@ -96,7 +97,8 @@ class TestBaseModelMethods(unittest.TestCase):
             # remove file.json
             os.remove(TestBaseModelMethods.path)
             # copy content of test_file.json to file.json
-            os.rename(TestBaseModelMethods.test_path, TestBaseModelMethods.path)
+            os.rename(TestBaseModelMethods.test_path,
+                      TestBaseModelMethods.path)
         if TestBaseModelMethods.flag == 1:
             os.remove(TestBaseModelMethods.path)
 
