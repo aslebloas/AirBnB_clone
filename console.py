@@ -41,16 +41,18 @@ class HBNBCommand(cmd.Cmd):
                     elif args[0] == 'destroy':
                         self.do_destroy(typ + ' ' + args[1])
                     elif args[0] == 'update':
-                        argss = args[1].split(',')
+                        argss = args[1].split(',', 1)
                         if len(argss) > 1:
-                            if argss[1][0] == '{':
+                            if argss[1][1] == '{':
                                 dic = storage.all()
-                                key = argss[0] + '.' + typ
+                                key = typ + '.' + argss[0]
                                 obj = dic[key]
                                 dicc = obj.to_dict()
-                                di = dict(argss[1])
-                                for k, v in di:
-                                    dicc[k] = v
+                                argss[1] = argss[1][2:-1]
+                                key_val = argss[1].split(', ')
+                                for i in key_val:
+                                    k_v = i.split(': ')
+                                    dicc[k_v[0][1:-1]] = k_v[1][1:-1]
                                 if typ == "BaseModel":
                                     new = BaseModel(**dicc)
                                 elif typ == "User":
