@@ -21,7 +21,7 @@ class TestCityModelInit(unittest.TestCase):
         self.model2.my_number = 98
         self.model2.state_id = "cally"
         self.dic25 = {'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
-                            'test': 'test'}
+                      'test': 'test'}
         self.model3 = City(**self.dic25)
 
     def test_dict_init(self):

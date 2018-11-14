@@ -27,9 +27,9 @@ class TestReviewModelInit(unittest.TestCase):
         self.model2.text = "luxury"
         self.model5 = Review()
         self.dic25 = {'place_id': 'place', 'user_id': 'Gove',
-                            'text': 'blablabla', 'name': 'Erwin',
-                            'my_number': 42, 'state_id': 'CA',
-                            'test': 'test'}
+                      'text': 'blablabla', 'name': 'Erwin',
+                      'my_number': 42, 'state_id': 'CA',
+                      'test': 'test'}
         self.model3 = Review(**self.dic25)
 
     def test_dict_init(self):

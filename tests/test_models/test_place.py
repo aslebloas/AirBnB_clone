@@ -41,12 +41,12 @@ class TestPlaceModelInit(unittest.TestCase):
         self.model2.longitude = 88.88
         self.model2.amenity_ids = ['everything']
         self.dic25 = {'city_id': 'SanFran', 'user_id': 'Gove',
-                            'description': 'nice', 'number_rooms': 7,
-                            'number_bathrooms': 7, 'max_guest': 7,
-                            'price_by_night': 7, 'longitude': 7.7,
-                            'latitude': 7.7, 'amenity_ids': ['bla', 'bla'],
-                            'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
-                            'test': 'test'}
+                      'description': 'nice', 'number_rooms': 7,
+                      'number_bathrooms': 7, 'max_guest': 7,
+                      'price_by_night': 7, 'longitude': 7.7,
+                      'latitude': 7.7, 'amenity_ids': ['bla', 'bla'],
+                      'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                      'test': 'test'}
         self.model3 = Place(**self.dic25)
 
     def test_dict_init(self):
