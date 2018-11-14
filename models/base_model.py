@@ -18,7 +18,9 @@ class BaseModel():
         if type(kwargs) is dict and len(kwargs) != 0:
             """ LOOP FOR SETTING VALUES """
             for k, v in kwargs.items():
-                if k == "__class__":
+                if k == "id":
+                    self.id = v
+                elif k == "__class__":
                     pass
                 elif k == "updated_at":
                     self.updated_at = datetime.strptime(v, fmt)
@@ -26,6 +28,9 @@ class BaseModel():
                     self.created_at = datetime.strptime(v, fmt)
                 else:
                     setattr(self, str(k), v)
+
+                if 'id' not in kwargs.keys():
+                    self.id = str(uuid.uuid4())
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()

@@ -70,14 +70,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """Updates an instance by add ing or updating an attribute
-        """
-        """
         Args:
             line: line argument
         """
 
-        """ Need add More once More models exist"""
-        args = line.split(' ')
+        args = line.split(' ', maxsplit=3)
         if len(line) == 0:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.models:
@@ -85,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) == 1:
             print("** instance id missing **")
         else:
-            dic = storage.all()
+            dic = storage.all().copy()
             key = args[0] + '.' + args[1]
             if key in dic:
                 if len(args) == 2:
@@ -104,6 +101,8 @@ class HBNBCommand(cmd.Cmd):
                         dictionary[args[2]] = float(string)
                     elif args[2] == "amenity_ids":
                         dictionary[args[2]] = list(string)
+                    else:
+                        dictionary[args[2]] = str(string)
                     """ change once mode models exist"""
                     if args[0] == "BaseModel":
                         new = BaseModel(**dictionary)
@@ -128,12 +127,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Shows a given Model
-        """
-        """
         Args:
             line: command line
         """
-        """ Need Work once more models made"""
+
         if len(line) == 0:
             print("** class name missing **")
         else:
@@ -142,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
                 if len(args) < 2:
                     print("** instance id missing **")
                 else:
-                    dic = storage.all()
+                    dic = storage.all().copy()
                     ins_id = args[0] + '.' + args[1]
                     if ins_id in dic:
                         print(dic[ins_id])
@@ -155,22 +152,17 @@ class HBNBCommand(cmd.Cmd):
         print("Shows a given Model\n")
 
     def do_all(self, line):
-        """Prints All Insteses of Spacific Model Type
-        """
-        """
+        """Prints All Instances of Specific Model Type
         Args:
             line: command line
         """
-        """Add More Once more Models added"""
         if len(line) == 0:
-            dic = {}
             dic = storage.all().copy()
             lst = []
             for k in dic.keys():
                 lst.append(str(dic[k]))
             print(lst)
         elif line in HBNBCommand.models:
-            dic = {}
             dic = storage.all().copy()
             lst = []
             for k in dic.keys():
