@@ -21,7 +21,7 @@ class FileStorage():
         if os.path.exists(self.__file_path):
             with open(self.__file_path) as file:
                 self.__objects = json.load(file)
-                dic = self.__objects
+                dic = self.__objects.copy()
                 for k, v in dic.items():
                     if v['__class__'] == "BaseModel":
                         from models.base_model import BaseModel
