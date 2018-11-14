@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Unitest for BaseModel class"""
 
+import json
+import os
+from shutil import copyfile
 import unittest
 from models.amenity import Amenity
 from datetime import datetime
@@ -16,6 +19,18 @@ class TestAmenityModelInit(unittest.TestCase):
         self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.dic25 = {'name': 'Erwin', 'my_number': 42,
+                               'state_id': 'CA', 'test': 'test'}
+        self.model3 = Amenity(**self.dic25)
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -66,7 +81,7 @@ class TestAmenityModelInit(unittest.TestCase):
         pass
 
 
-class TestStateModelMethods(unittest.TestCase):
+class TestAmenityModelMethods(unittest.TestCase):
     """Test for Amenity methods"""
     path = os.path.abspath("file.json")
     test_path = os.path.abspath("test_file.json")
@@ -78,7 +93,7 @@ class TestStateModelMethods(unittest.TestCase):
         # if file.json exists
         if os.path.exists(TestAmenityModelMethods.path) is True:
             # if copy of file.json exists delete it
-            if os.path.exists(TestBaseModelMethods.test_path) is True:
+            if os.path.exists(TestAmenityModelMethods.test_path) is True:
                 os.remove(TestAmenityModelMethods.test_path)
             # copy content of file.json to test_file.json
             os.rename(TestAmenityModelMethods.path,
@@ -107,6 +122,7 @@ class TestStateModelMethods(unittest.TestCase):
         self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = Amenity()
 
     def test_save(self):
         """test save Amenity instance method"""
@@ -130,6 +146,23 @@ class TestStateModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
+        self.model3.save()
+        self.model3_json = self.model3.to_dict()
+        self.assertIs(type(self.model3_json['name']), str)
+        self.assertEqual(self.model3_json['name'], '')
+
+    def test_json(self):
+        """test formatting in the json file"""
+        self.model1.save()
+        with open(TestAmenityModelMethods.path) as file:
+            self.assertIs(os.path.exists(TestAmenityModelMethods.path), True)
+            self.json_dict = json.load(file)
+            for k, v in self.json_dict.items():
+                for key, value in v.items():
+                    if key == "created_at":
+                        self.assertIs(type(value), str)
+                    elif key == "updated_at":
+                        self.assertIs(type(value), str)
 
 if __name__ == '__main__':
     unittest.main()
