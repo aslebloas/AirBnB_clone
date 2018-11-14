@@ -16,6 +16,17 @@ class TestStateModelInit(unittest.TestCase):
         self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = State({'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                             'test': 'test'})
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""
@@ -107,6 +118,7 @@ class TestStateModelMethods(unittest.TestCase):
         self.model2 = State()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = State()
 
     def test_save(self):
         """test save BaseModel instance method"""
@@ -130,6 +142,9 @@ class TestStateModelMethods(unittest.TestCase):
         self.assertIs(type(self.model1_json['created_at']), str)
         self.assertIs(type(self.model1_json['updated_at']), str)
         self.assertIs(type(self.model1_json['id']), str)
+        self.model3.save()
+        self.assertIs(type(self.model3_json['name']), str)
+        self.assertEqual(self.model3_json['name'], '')
 
 if __name__ == '__main__':
     unittest.main()

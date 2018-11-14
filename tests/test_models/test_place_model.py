@@ -36,6 +36,42 @@ class TestPlaceModelInit(unittest.TestCase):
         self.model2.latitude = 88.88
         self.model2.longitude = 88.88
         self.model2.amenity_ids = ['everything']
+        self.model3 = Place({'city_id': 'SanFran', 'user_id': 'Gove',
+                            'description': 'nice', 'number_rooms': 7,
+                            'number-bathrooms': 7, 'max_guest': 7,
+                            'price_by_night': 7, 'longitude': 7.7,
+                            'latitude': 7.7, 'amenity_ids': ['bla', 'bla'],
+                            'name': 'Erwin', 'my_number': 42, 'state_id': 'CA',
+                            'test': 'test'})
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
+        self.assertIs(type(self.model3.city_id), str)
+        self.assertEqual(self.model3.city_id, 'SanFran')
+        self.assertIs(type(self.model3.user_id), str)
+        self.assertEqual(self.model3.user_id, 'Gove')
+        self.assertIs(type(self.model3.description), str)
+        self.assertEqual(self.model3.description, 'nice')
+        self.assertIs(type(self.model3.number_rooms), int)
+        self.assertEqual(self.model3.number_rooms, 7)
+        self.assertIs(type(self.model3.number_bathroom), int)
+        self.assertEqual(self.model3.number_bathrooms, 7)
+        self.assertIs(type(self.model3.max_guest), int)
+        self.assertEqual(self.model3.max_guest, 7)
+        self.assertIs(type(self.model3.price_by_night), int)
+        self.assertEqual(self.model3.price_by_night, 7)
+        self.assertIs(type(self.model3.latitude), float)
+        self.assertEqual(self.model3.latitude, 7.7)
+        self.assertIs(type(self.model3.longitude), float)
+        self.assertEqual(self.model3.longitude, 7.7)
+        self.assertIs(type(self.model3.amenity_ids), list)
+        self.assertEqual(self.model3.amenity_ids, ['bla', 'bla'])
 
     def test_attr_amenity_ids(self):
         """tests attribute amenity_ids"""

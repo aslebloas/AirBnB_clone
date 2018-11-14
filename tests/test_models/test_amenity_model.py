@@ -16,6 +16,17 @@ class TestAmenityModelInit(unittest.TestCase):
         self.model2 = Amenity()
         self.model2.name = "Betty"
         self.model2.my_number = 98
+        self.model3 = Amenity({'name': 'Erwin', 'my_number': 42,
+                               'state_id': 'CA', 'test': 'test'})
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
 
     def test_attr_id(self):
         """test if attribute id are correctly set up"""

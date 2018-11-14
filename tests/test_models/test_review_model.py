@@ -23,6 +23,25 @@ class TestReviewModelInit(unittest.TestCase):
         self.model2.user_id = "Bill Gates"
         self.model2.text = "luxury"
         self.model5 = Review()
+        self.model3 = Review({'place_id': 'place', 'user_id': 'Gove',
+                            'text': 'blablabla','name': 'Erwin',
+                            'my_number': 42, 'state_id': 'CA',
+                            'test': 'test'})
+
+    def test_dict_init(self):
+        """testing the dictionary initilization of this model"""
+        self.assertIs(type(self.model3.place_id), str)
+        self.assertEqual(self.model3.place_id, 'place')
+        self.assertIs(type(self.model3.user_id), str)
+        self.assertEqual(self.model3.user_id, 'Gove')
+        self.assertIs(type(self.model3.text), str)
+        self.assertEqual(self.model3.text, 'blablabla')
+        self.assertIs(type(self.model3.name), str)
+        self.assertEqual(self.model3.name, "Erwin")
+        self.assertIs(type(self.model3.my_number), int)
+        self.assertEqual(self.model3.my_number, 42)
+        self.assertIs(type(self.model3.test), str)
+        self.assertEqual(self.model3.test, "test")
 
     def test_att_place_id(self):
         """tests attribuet place_id"""
