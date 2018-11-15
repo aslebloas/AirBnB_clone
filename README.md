@@ -1,6 +1,8 @@
 # AirBnB clone
 ## Description of the project
-Airbnb clone.
+This project is part of our training to become software engineers at
+*Holberton School*.
+This project is intended to be an Airbnb clone.
 
 ## Description of the command interpreter:
 The command interpreter helps us to manage the objects of our project.
@@ -20,11 +22,11 @@ The command interpreter helps us to manage the objects of our project.
 To start the console:
 ```
 $ cd AirBnB_clone
-~/AirBnB$ ./console.py
+AirBnB$ ./console.py
 ```
 
 ### How to use it
-All these objects class are available:
+All these objects classes are available:
 
 - BaseModel (which is the parent class. All other classes inherit from it.)
 
@@ -41,6 +43,42 @@ All these objects class are available:
 - Review
 
 All these commands are available:
+
+- `all / all <class name>` retrieve all instances of a class
+
+- `show <class name> <object id>` retrieve an instance based on its ID
+
+- `create <class name>`
+
+- `update <class name> <object id> <attribute> <\"value\">`
+update an instance based on his ID
+
+- `destroy <class name> <object id>` destroy an instance based on his ID
+
+- `quit` quit the console
+
+- `help <command>` bring the documentation about a command
+
+- `EOF` (which is Ctrl + D) quit the console
+
+#### Alternatives
+
+- `<class name>.all()` retrieve all instances of a class
+
+- `<class name>.show(<id>)` retrieve an instance based on its ID
+
+- `<class name>.count()` retrieve the number of instances of a class
+
+- `<class name>.destroy(<id>)` destroy an instance based on his ID
+
+- `<class name>.update(<id>, <attribute name>, <attribute value>)`
+update an instance based on his ID
+
+- `<class name>.update(<id>, <dictionary representation>)`
+update an instance based on his ID with a dictionary
+
+
+### Examples
 
 
 ```
@@ -100,5 +138,3 @@ Note: if an id is not present, a new one will be automatically created.
 ```
 {"BaseModel.ee49c413-023a-4b49-bd28-f2936c95460d": {"my_number": 89, "__class__": "BaseModel", "updated_at": "2017-09-28T21:07:25.047381", "created_at": "2017-09-28T21:07:25.047372", "name": "Holberton", "id": "ee49c413-023a-4b49-bd28-f2936c95460d"}}
 ```
-
-### Examples
