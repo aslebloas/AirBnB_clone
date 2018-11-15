@@ -81,7 +81,6 @@ class TestFileStorageReload(unittest.TestCase):
     def test_reload(self):
         """test reload"""
         self.all_objs = storage.all()
-#        self.assertEqual(len(self.all_objs), 0)
         my_model = BaseModel()
         my_model.name = "Holberton"
         my_model.my_number = 98
@@ -98,6 +97,12 @@ class TestFileStorageReload(unittest.TestCase):
 
         self.all_objs = storage.all()
         self.assertTrue(len(self.all_objs) > 0)
+
+        for self.obj_id in self.all_objs.keys():
+            self.obj = self.all_objs[self.obj_id]
+            self.assertIsNot(type(self.obj), dict)
+            self.assertEqual(self.obj_id.split('.')[0],
+                             self.obj.__class__.__name__)
 
 if __name__ == "__main__":
     unittest.main()
