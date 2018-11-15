@@ -9,6 +9,7 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
     def init(self):
         """init with dictionary"""
         super().__init__(**kwargs)
