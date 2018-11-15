@@ -145,7 +145,7 @@ class TestReviewModelMethods(unittest.TestCase):
             os.rename(TestReviewModelMethods.test_path,
                       TestReviewModelMethods.path)
         if TestReviewModelMethods.flag == 1:
-            os.remove(TestReveiwModelMethods.path)
+            os.remove(TestReviewModelMethods.path)
 
     def setUp(self):
         """setup method for the tests in the class"""
