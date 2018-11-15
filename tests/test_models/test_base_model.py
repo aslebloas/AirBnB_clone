@@ -34,6 +34,8 @@ class TestBaseModelInit(unittest.TestCase):
         self.assertEqual(self.strr[0], '[BaseModel]')
         self.st = str(self.model1.to_dict())
         self.assertEqual(self.st, self.strr[2])
+        self.model1_id = '(' + self.model1.id, ')'
+        self.assertEqual(self.strr[1], self.model1_id)
 
     def test_class(self):
         """Test object classes"""
