@@ -26,16 +26,14 @@ class TestBaseModelInit(unittest.TestCase):
     def test_str(self):
         """tests the __str__ function"""
         self.assertIs(type(self.model1.__str__()), str)
-        self.assertEqual(self.model1.__str__(), str(self.model1))
+        self.assertEqual(self.model1.__str__(), print(self.model1))
         self.assertIs(type(self.model2.__str__()), str)
-        self.assertEqual(self.model2.__str__(), str(self.model2))
-        self.assertNotEqual(self.model2.__str__(), str(self.model1))
+        self.assertEqual(self.model2.__str__(), print(self.model2))
+        self.assertNotEqual(self.model2.__str__(), print(self.model1))
         self.strr = self.model1.__str__().split(' ', 2)
         self.assertEqual(self.strr[0], '[BaseModel]')
         self.st = str(self.model1.to_dict())
         self.assertEqual(self.st, self.strr[2])
-        self.model1_id = '(' + self.model1.id, ')'
-        self.assertEqual(self.strr[1], self.model1_id)
 
     def test_class(self):
         """Test object classes"""
