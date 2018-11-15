@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Module testing file_storage module"""
+import json
 import os
 import unittest
 from models.base_model import BaseModel
@@ -103,6 +104,56 @@ class TestFileStorageReload(unittest.TestCase):
             self.assertIsNot(type(self.obj), dict)
             self.assertEqual(self.obj_id.split('.')[0],
                              self.obj.__class__.__name__)
+
+
+class TestFileStorageSave(unittest.TestCase):
+    """Test for FileStorage instance initialization"""
+    path = os.path.abspath("file.json")
+    test_path = os.path.abspath("test_file.json")
+    flag = 0
+
+    @classmethod
+    def setUpClass(cls):
+        """Class setup method"""
+        cls.storage = FileStorage()
+        # if file exist, make a copy of it and remove it
+        if os.path.exists(TestFileStorageSave.path) is True:
+            # remove the previous test file
+            if os.path.exists(TestFileStorageSave.test_path):
+                os.remove(TestFileStorageSave.test_path)
+            # copy file to the copy
+            os.rename(TestFileStorageSave.path,
+                      TestFileStorageSave.test_path)
+        else:
+            TestFileStorageSave.flag = 1
+
+    @classmethod
+    def tearDownClass(cls):
+        """Teardown objects"""
+        # remove file at the end of the test and restore copy
+        if os.path.exists(TestFileStorageSave.test_path) is True:
+            os.rename(TestFileStorageSave.test_path,
+                      TestFileStorageSave.path)
+        if ((TestFileStorageSave.flag == 1 and
+             os.path.exists(TestFileStorageInit.path))):
+            os.remove(TestFileStorageSave.path)
+
+    def SetUp(self):
+        """Set up new object"""
+        self.my_model = BaseModel()
+
+    def test_save(self):
+        """test save
+        Args:
+            obj: object to be saved to file
+        """
+        storage.save()
+        with open(TestFileStorageSave.path) as file:
+            dictionary = json.load(file)
+            for k, v in dictionary.items():
+                self.assertIs(type(v), dict)
+                self.assertEqual(k.split('.')[0],
+                                 v['__class__'])
 
 if __name__ == "__main__":
     unittest.main()
