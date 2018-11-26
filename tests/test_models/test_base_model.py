@@ -23,6 +23,14 @@ class TestBaseModelInit(unittest.TestCase):
                       'my_float': 2.3}
         self.model3 = BaseModel(**self.dic25)
 
+    def test_str(self):
+        """tests the __str__ function"""
+        self.assertIs(type(self.model1.__str__()), str)
+        self.assertEqual(self.model1.__str__(), str(self.model1))
+        self.assertIs(type(self.model2.__str__()), str)
+        self.assertEqual(self.model2.__str__(), str(self.model2))
+        self.assertNotEqual(self.model2.__str__(), print(self.model1))
+
     def test_class(self):
         """Test object classes"""
         self.assertIsInstance(self.model1, BaseModel)
