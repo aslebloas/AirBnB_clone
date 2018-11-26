@@ -4,11 +4,9 @@ body {
     color: #484848;
     font-size: 14px;
     font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    display: flex;
-    flex-direction: column;
 }
 
 .container {
-    width: 1000px;
+    max-width: 1000px;
     margin: 30px auto 30px auto;
 }
