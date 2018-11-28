@@ -5,7 +5,8 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: absolute; bottom: 0;
+    position: absolute;
+    bottom: 0;
     text-align: center;
     border-top: solid 1px #CCCCCC;
 }
