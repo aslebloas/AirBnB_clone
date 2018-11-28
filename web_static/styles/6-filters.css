@@ -76,6 +76,7 @@ button:hover {
 li {
     padding: 2px 0px 2px 20px;
 }
-li>span {
-    padding-left: 20px;
+li>p {
+    padding: 0px;
+    text-indent: 20px;
 }
